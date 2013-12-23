@@ -30,6 +30,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
         </activity>
-    </application>
+
+        <activity
+            android:name="com.flightcom.kudosu.SolveActivity"
+            android:label="@string/title_activity_solve"
+            android:parentActivityName="MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="MainActivity" />
+        </activity>    </application>
 
 </manifest>

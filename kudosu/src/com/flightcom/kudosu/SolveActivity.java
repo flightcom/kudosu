@@ -4,7 +4,11 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.support.v4.app.NavUtils;
+import android.text.Layout;
 import android.annotation.TargetApi;
 import android.os.Build;
 
@@ -13,9 +17,43 @@ public class SolveActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_play);
-		// Show the Up button in the action bar.
-		setupActionBar();
+		//setContentView(R.layout.activity_solve);
+		
+		//LinearLayout lSolve = (LinearLayout) findViewById(R.layout.activity_solve);
+		LinearLayout lSolve = new LinearLayout(this);
+		lSolve.setOrientation(LinearLayout.VERTICAL);
+		lSolve.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
+		for(int i = 0; i < 3; i++){
+			LinearLayout lCasesVert = new LinearLayout(this);
+			lCasesVert.setOrientation(LinearLayout.VERTICAL);
+			lCasesVert.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			
+			for(int j = 0; j < 3; j++){
+				LinearLayout lCasesHor = new LinearLayout(this);
+				lCasesHor.setOrientation(LinearLayout.HORIZONTAL);
+				
+				for(int k = 0; k < 3; k++){
+					LinearLayout lCaseVert = new LinearLayout(this);
+					lCaseVert.setOrientation(LinearLayout.VERTICAL);
+
+					for(int l = 0; l < 3; l++){
+						EditText caseFinale = new EditText(this);
+						caseFinale.
+						lCaseVert.addView(caseFinale);
+					}
+
+					lCasesHor.addView(lCaseVert);
+				}
+
+				lCasesVert.addView(lCasesHor);
+			}
+
+			lSolve.addView(lCasesVert);
+		}
+		
+		setContentView(lSolve);
+		
 	}
 
 	/**
