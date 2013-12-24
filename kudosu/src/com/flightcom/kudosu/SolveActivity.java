@@ -1,45 +1,66 @@
 package com.flightcom.kudosu;
 
-import android.os.Bundle;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.support.v4.app.NavUtils;
-import android.text.Layout;
-import android.annotation.TargetApi;
-import android.os.Build;
 
 public class SolveActivity extends Activity {
 
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.activity_solve);
+		setContentView(R.layout.activity_solve);
 		
 		//LinearLayout lSolve = (LinearLayout) findViewById(R.layout.activity_solve);
 		LinearLayout lSolve = new LinearLayout(this);
 		lSolve.setOrientation(LinearLayout.VERTICAL);
-		lSolve.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		lSolve.setGravity(Gravity.CENTER_HORIZONTAL);
+		//lSolve.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 
 		for(int i = 0; i < 3; i++){
 			LinearLayout lCasesVert = new LinearLayout(this);
-			lCasesVert.setOrientation(LinearLayout.VERTICAL);
-			lCasesVert.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			lCasesVert.setOrientation(LinearLayout.HORIZONTAL);
+			lCasesVert.setGravity(Gravity.TOP);
+			lCasesVert.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 			
 			for(int j = 0; j < 3; j++){
 				LinearLayout lCasesHor = new LinearLayout(this);
-				lCasesHor.setOrientation(LinearLayout.HORIZONTAL);
-				
+				lCasesHor.setOrientation(LinearLayout.VERTICAL);
+				lCasesHor.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
 				for(int k = 0; k < 3; k++){
 					LinearLayout lCaseVert = new LinearLayout(this);
-					lCaseVert.setOrientation(LinearLayout.VERTICAL);
+					lCaseVert.setOrientation(LinearLayout.HORIZONTAL);
+					lCaseVert.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
 					for(int l = 0; l < 3; l++){
 						EditText caseFinale = new EditText(this);
-						caseFinale.
+						Drawable coin = null;
+						String posX = Integer.toString(3*i+k+1);
+						String posY = Integer.toString(3*j+l+1);
+						int pos = Integer.parseInt(posX+posY);
+						switch (pos){
+							case 11: coin = getResources().getDrawable( R.drawable.rounded_topleft_edittext ); break;
+							case 19: coin = getResources().getDrawable( R.drawable.rounded_topright_edittext ); break;
+							case 91: coin = getResources().getDrawable( R.drawable.rounded_bottomleft_edittext ); break;
+							case 99: coin = getResources().getDrawable( R.drawable.rounded_bottomright_edittext ); break;
+							default: coin = getResources().getDrawable( R.drawable.edittext ); break;
+						}
+						caseFinale.setBackground(coin);
+						caseFinale.setText(posX+posY);
+						caseFinale.setTextSize(10);
+						caseFinale.setCursorVisible(false);
 						lCaseVert.addView(caseFinale);
 					}
 
