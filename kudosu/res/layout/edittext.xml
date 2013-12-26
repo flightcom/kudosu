@@ -2,7 +2,7 @@
 <EditText xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/edittext"
     android:inputType="text"
-    android:background="@drawable/rounded_topleft_edittext"
+    android:background="@drawable/topleft_edittext"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />

@@ -3,29 +3,39 @@ package com.flightcom.kudosu;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.text.InputType;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
 public class SolveActivity extends Activity {
-
+	
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_solve);
 		
-		//LinearLayout lSolve = (LinearLayout) findViewById(R.layout.activity_solve);
-		LinearLayout lSolve = new LinearLayout(this);
-		lSolve.setOrientation(LinearLayout.VERTICAL);
-		lSolve.setGravity(Gravity.CENTER_HORIZONTAL);
+		// On récupère les dimensions de l'écran
+		DisplayMetrics displaymetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+		int width = displaymetrics.widthPixels;
+		
+		LinearLayout lSolve = (LinearLayout) findViewById(R.id.gridlayout);
+		//LinearLayout lSolve = new LinearLayout(this);
+		//lSolve.setOrientation(LinearLayout.VERTICAL);
+		//lSolve.setGravity(Gravity.CENTER_HORIZONTAL);
 		//lSolve.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 
 		for(int i = 0; i < 3; i++){
@@ -46,20 +56,47 @@ public class SolveActivity extends Activity {
 
 					for(int l = 0; l < 3; l++){
 						EditText caseFinale = new EditText(this);
-						Drawable coin = null;
+						final Drawable coin;
 						String posX = Integer.toString(3*i+k+1);
 						String posY = Integer.toString(3*j+l+1);
-						int pos = Integer.parseInt(posX+posY);
-						switch (pos){
-							case 11: coin = getResources().getDrawable( R.drawable.rounded_topleft_edittext ); break;
-							case 19: coin = getResources().getDrawable( R.drawable.rounded_topright_edittext ); break;
-							case 91: coin = getResources().getDrawable( R.drawable.rounded_bottomleft_edittext ); break;
-							case 99: coin = getResources().getDrawable( R.drawable.rounded_bottomright_edittext ); break;
-							default: coin = getResources().getDrawable( R.drawable.edittext ); break;
+						
+						String draw = "";
+						switch(Integer.parseInt(posX) % 3){
+							case 0: draw += "bottom"; break;
+							case 1: draw += "top"; break;
+							case 2: draw += "mid"; break;
 						}
+						
+						switch(Integer.parseInt(posY) % 3){
+							case 0: draw += "right"; break;
+							case 1: draw += "left"; break;
+							default: draw += ""; break;
+						}
+						
+						int drawableId = getResources().getIdentifier(draw+"_edittext", "drawable", getPackageName());
+						
+						coin = getResources().getDrawable( drawableId );
+					
+						caseFinale.setOnFocusChangeListener(new OnFocusChangeListener() {
+							
+							@Override
+							public void onFocusChange(View v, boolean hasFocus) {
+								// TODO Auto-generated method stub
+									if(v.hasFocus()){
+										v.setBackgroundColor(Color.GREEN);
+									} else {
+										v.setBackground(coin);
+								}
+							}
+						});
+
+						caseFinale.setInputType(InputType.TYPE_NULL);
+						caseFinale.setGravity(Gravity.CENTER);
 						caseFinale.setBackground(coin);
 						caseFinale.setText(posX+posY);
-						caseFinale.setTextSize(10);
+						caseFinale.setTextSize(16);
+						caseFinale.setWidth((int)width/9);
+						caseFinale.setHeight((int)width/9);
 						caseFinale.setCursorVisible(false);
 						lCaseVert.addView(caseFinale);
 					}
@@ -73,8 +110,8 @@ public class SolveActivity extends Activity {
 			lSolve.addView(lCasesVert);
 		}
 		
-		setContentView(lSolve);
-		
+		//setContentView(lSolve);
+		//setContentView(R.layout.activity_solve);
 	}
 
 	/**
@@ -109,6 +146,6 @@ public class SolveActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
+	} 
 
 }
