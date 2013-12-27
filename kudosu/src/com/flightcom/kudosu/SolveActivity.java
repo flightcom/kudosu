@@ -14,12 +14,16 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
 public class SolveActivity extends Activity {
+	
+	EditText selectedCase = null;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -27,6 +31,26 @@ public class SolveActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_solve);
 		
+		Button bt1 = (Button) findViewById(R.id.button1);
+		Button bt2 = (Button) findViewById(R.id.button2);
+		Button bt3 = (Button) findViewById(R.id.button3);
+		Button bt4 = (Button) findViewById(R.id.button4);
+		Button bt5 = (Button) findViewById(R.id.button5);
+		Button bt6 = (Button) findViewById(R.id.button6);
+		Button bt7 = (Button) findViewById(R.id.button7);
+		Button bt8 = (Button) findViewById(R.id.button8);
+		Button bt9 = (Button) findViewById(R.id.button9);
+
+		bt1.setOnClickListener(clickNumberListener);
+		bt2.setOnClickListener(clickNumberListener);
+		bt3.setOnClickListener(clickNumberListener);
+		bt4.setOnClickListener(clickNumberListener);
+		bt5.setOnClickListener(clickNumberListener);
+		bt6.setOnClickListener(clickNumberListener);
+		bt7.setOnClickListener(clickNumberListener);
+		bt8.setOnClickListener(clickNumberListener);
+		bt9.setOnClickListener(clickNumberListener);
+
 		// On récupère les dimensions de l'écran
 		DisplayMetrics displaymetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -84,6 +108,7 @@ public class SolveActivity extends Activity {
 								// TODO Auto-generated method stub
 									if(v.hasFocus()){
 										v.setBackgroundColor(Color.GREEN);
+										selectedCase = (EditText) v;
 									} else {
 										v.setBackground(coin);
 								}
@@ -94,7 +119,7 @@ public class SolveActivity extends Activity {
 						caseFinale.setGravity(Gravity.CENTER);
 						caseFinale.setBackground(coin);
 						caseFinale.setText(posX+posY);
-						caseFinale.setTextSize(16);
+						caseFinale.setTextSize(24);
 						caseFinale.setWidth((int)width/9);
 						caseFinale.setHeight((int)width/9);
 						caseFinale.setCursorVisible(false);
@@ -147,5 +172,17 @@ public class SolveActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	} 
+	
+	private OnClickListener clickNumberListener = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Button bt = (Button) v;
+			String value = bt.getText().toString();
+			selectedCase.setText(value);
+			
+		}
+	};
 
 }
