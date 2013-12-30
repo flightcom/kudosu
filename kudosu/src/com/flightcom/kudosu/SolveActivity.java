@@ -24,6 +24,7 @@ import android.widget.LinearLayout.LayoutParams;
 public class SolveActivity extends Activity {
 	
 	EditText selectedCase = null;
+	Sudoku sudoku = new Sudoku();
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -118,7 +119,8 @@ public class SolveActivity extends Activity {
 						caseFinale.setInputType(InputType.TYPE_NULL);
 						caseFinale.setGravity(Gravity.CENTER);
 						caseFinale.setBackground(coin);
-						caseFinale.setText(posX+posY);
+						caseFinale.setText(Integer.toString(sudoku.getCaseAt(Integer.parseInt(posX)-1, Integer.parseInt(posY)-1)));
+						//caseFinale.setText(posX+posY);
 						caseFinale.setTextSize(24);
 						caseFinale.setWidth((int)width/9);
 						caseFinale.setHeight((int)width/9);
