@@ -268,5 +268,14 @@ public class Sudoku {
 		return res;
 
 	}
-	
+
+	public static int caseCoordToInt(int row, int col){
+		
+		int res = 0;
+		
+		res = Integer.parseInt(Integer.toString(row)+Integer.toString(col));
+		
+		return res;
+
+	}
 }

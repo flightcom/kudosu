@@ -140,6 +140,11 @@ public class SolveActivity extends Activity {
 						caseFinale.setWidth((int)width/9);
 						caseFinale.setHeight((int)width/9);
 						caseFinale.setCursorVisible(false);
+
+						int area = Sudoku.getAreaFromCase(Sudoku.caseCoordToInt(Integer.parseInt(posX), Integer.parseInt(posY)));
+						if(area %2 == 0)
+							caseFinale.setBackgroundColor(Color.LTGRAY);
+						
 						lCaseVert.addView(caseFinale);
 					}
 
