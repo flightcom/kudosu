@@ -11,11 +11,13 @@ import android.support.v4.app.NavUtils;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -24,7 +26,7 @@ import android.widget.LinearLayout.LayoutParams;
 public class SolveActivity extends Activity {
 	
 	EditText selectedCase = null;
-	Sudoku sudoku = new Sudoku();
+	Sudoku sudoku = new Sudoku(5);
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -41,6 +43,8 @@ public class SolveActivity extends Activity {
 		Button bt7 = (Button) findViewById(R.id.button7);
 		Button bt8 = (Button) findViewById(R.id.button8);
 		Button bt9 = (Button) findViewById(R.id.button9);
+		
+		Button btDel = (Button) findViewById(R.id.buttonDel);
 
 		bt1.setOnClickListener(clickNumberListener);
 		bt2.setOnClickListener(clickNumberListener);
@@ -51,6 +55,8 @@ public class SolveActivity extends Activity {
 		bt7.setOnClickListener(clickNumberListener);
 		bt8.setOnClickListener(clickNumberListener);
 		bt9.setOnClickListener(clickNumberListener);
+		
+		btDel.setOnClickListener(clickDelListener);
 
 		// On récupère les dimensions de l'écran
 		DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -119,8 +125,17 @@ public class SolveActivity extends Activity {
 						caseFinale.setInputType(InputType.TYPE_NULL);
 						caseFinale.setGravity(Gravity.CENTER);
 						caseFinale.setBackground(coin);
-						caseFinale.setText(Integer.toString(sudoku.getCaseAt(Integer.parseInt(posX)-1, Integer.parseInt(posY)-1)));
+						int caseValueI = sudoku.getCaseAt(Integer.parseInt(posX), Integer.parseInt(posY));
+						String caseValueS = (caseValueI == 0) ? "" : Integer.toString(caseValueI);
+						String caseNum_S = posX + posY;
+						int caseNum_I = Integer.parseInt(caseNum_S);
+						//caseFinale.setText(Integer.toString(Sudoku.getAreaFromCase(caseNum_I)));
+						caseFinale.setText(caseValueS);
 						//caseFinale.setText(posX+posY);
+						if ( caseValueI != 0 )
+							caseFinale.setFocusable(false);
+						else
+							caseFinale.setTextColor(Color.GRAY);
 						caseFinale.setTextSize(24);
 						caseFinale.setWidth((int)width/9);
 						caseFinale.setHeight((int)width/9);
@@ -184,6 +199,25 @@ public class SolveActivity extends Activity {
 			String value = bt.getText().toString();
 			selectedCase.setText(value);
 			
+		}
+	};
+	
+	private OnClickListener clickDelListener = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			//Button bt = (Button) v;
+			selectedCase.setText("");
+		}
+	};
+	
+	private OnKeyListener editCaseListener = new View.OnKeyListener() {
+		
+		@Override
+		public boolean onKey(View v, int keyCode, KeyEvent event) {
+			// TODO Auto-generated method stub
+			return false;
 		}
 	};
 

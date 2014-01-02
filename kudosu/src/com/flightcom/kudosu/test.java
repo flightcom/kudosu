@@ -4,7 +4,7 @@ public class test {
 
 	public static void main(){
 		
-		Sudoku sudoku = new Sudoku();
+		Sudoku sudoku = new Sudoku(0);
 		
 		sudoku.print();
 		

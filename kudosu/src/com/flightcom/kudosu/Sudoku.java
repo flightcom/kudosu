@@ -2,6 +2,8 @@ package com.flightcom.kudosu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Random;
 
 import android.util.Log;
@@ -10,53 +12,88 @@ public class Sudoku {
 	
 	ArrayList<Integer> numbersList = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9));
 	int[][] grid = new int[9][9];
+	int[][] gridFull = new int[9][9];
 
-	public Sudoku(){
+	public Sudoku(int level){
+		
+		this.init();
+		this.gridFull = this.grid;
+		this.setDifficulty(level);
 
+	}
+
+	@SuppressWarnings("unchecked")
+	private void init(){
+		
+		int maxAttempts = 3;
+		int attempts = 0;
+		
 		for (int i = 0; i < this.grid.length; i++){
 
-			int[] col = this.makeRow(i);
-			String sCol = Sudoku.rowToString(col);
+			int[] row = new int[9];
+			if (attempts == maxAttempts)
+				i = 0;
+			
+			Log.e(null, "actual row : " + Integer.toString(i) + ", attempts : "+Integer.toString(attempts));
+
+			attempts = 0;
+			
+			for(int j = 0; j < row.length; j++){
+
+				ArrayList<Integer> numbs = (ArrayList<Integer>) this.numbersList.clone();
+				ArrayList<Integer> forbiddenNumbs = new ArrayList<Integer>();
+
+				// On récupère les chiffres en amont dans la colonne de la grille 
+				for (int k = 0; k < i+1; k++){
+					if(!forbiddenNumbs.contains(this.grid[k][j]))
+						forbiddenNumbs.add(this.grid[k][j]);
+				}
+				
+				// On récupère les chiffres en amont dans la ligne de la grille
+				for (int l = 0; l < j; l++){
+					if(!forbiddenNumbs.contains(row[l]))
+						forbiddenNumbs.add(row[l]);
+				}
+				
+				// On récupère ceux de la case
+				int area = Sudoku.getAreaFromCase(Integer.parseInt(Integer.toString(i+1)+Integer.toString(j+1)));
+				int[] areaValues = this.areaToArray(area);
+				for(int x : areaValues){
+					if(!forbiddenNumbs.contains(x))
+						forbiddenNumbs.add(x);
+				}
+				
+				//Log.e(null, "forbidden nums : "+forbiddenNumbs.toString());
+				
+				numbs.removeAll(forbiddenNumbs);
+
+				//Log.e(null, "length : "+Integer.toString(numbs.size()));
+				//Log.e(null, "allowed nums : "+numbs.toString());
+
+				Collections.shuffle(numbs);
+				
+				if(numbs.size() == 0){
+					if(attempts >= maxAttempts){
+						break;
+					} else {
+						j = 0;
+						attempts++;
+						continue;
+					}
+				} else {
+					attempts = 0;
+				}
+				
+				row[j] = numbs.get(0);
+				//Log.e(null, "number choosen : " + Integer.toString(row[i]));
+			}
 
 			//Log.e(null, sCol);
 
 			for (int j = 0; j < this.grid[i].length; j++){
-				this.grid[i][j] = col[j];
-			}
-			
-			if(i < 3){
-				if(!this.areaIsOk(1) || !this.areaIsOk(2) || !this.areaIsOk(3))
-					i--;
-			} else if ( i < 6) {
-				if(!this.areaIsOk(4) || !this.areaIsOk(5) || !this.areaIsOk(6))
-					i--;
-			} else if ( i < 9) {
-				if(!this.areaIsOk(7) || !this.areaIsOk(8) || !this.areaIsOk(9))
-					i--;
+				this.grid[i][j] = row[j];
 			}
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public int[] makeRow(int row){
-
-		int[] col = new int[9];
-		ArrayList<Integer> numbs = (ArrayList<Integer>) this.numbersList.clone();
-		ArrayList<Integer> forbiddenNumbs = new ArrayList<Integer>();
-		
-		for(int i = 0; i < col.length; i++){
-
-			// On r�cup�re les chiffres dans la colonne de la grille 
-			for (int j = 0; j < row; j++){
-				forbiddenNumbs.add(this.grid[j][i]);
-			}
-
-			int r = Sudoku.getRandom(0, numbs.size()-1);
-			col[i] = numbs.get(r);
-			numbs.remove(r);
-		}
-
-		return col;
 	}
 
 	static int getRandom(int start, int end){
@@ -85,7 +122,7 @@ public class Sudoku {
 	
 	public int getCaseAt(int row, int col){
 
-		return (Integer.toString(this.grid[row][col]) != null) ? this.grid[row][col] : 0;
+		return (Integer.toString(this.grid[row-1][col-1]) != null) ? this.grid[row-1][col-1] : 0;
 
 	}
 	
@@ -150,15 +187,16 @@ public class Sudoku {
 		return res;
 	}
 	
-	public int getAreaFromCase(int lacase){
+	public static int getAreaFromCase(int lacase){
 		
 		int res = 0;
 		ArrayList<Integer> allAreas = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9));
 		ArrayList<Integer> possibleAreas = allAreas;
 		
 		String sCase = Integer.toString(lacase);
-		int row = Integer.parseInt(sCase.substring(0, 1)) -1;
-		int col = Integer.parseInt(sCase.substring(1, 2)) -1;
+		//Log.e(null, sCase);
+		int row = Integer.parseInt(String.valueOf(sCase.charAt(0))) -1;
+		int col = Integer.parseInt(String.valueOf(sCase.charAt(1))) -1;
 		
 		if(row < 3)
 			possibleAreas.retainAll(new ArrayList<Integer>(Arrays.asList(1,2,3)));
@@ -179,4 +217,56 @@ public class Sudoku {
 		return res;
 
 	}
+	
+	private void setDifficulty(int level){
+		
+		int caseToBlankQ = 0;
+		HashMap<Integer, String> casesDone = new HashMap<Integer, String>();
+		int i = 0;
+		
+		switch (level) {
+		
+			case 1: caseToBlankQ = 20; break;
+			case 2: caseToBlankQ = 25; break;
+			case 3: caseToBlankQ = 30; break;
+			case 4: caseToBlankQ = 35; break;
+			case 5: caseToBlankQ = 40; break;
+			
+		}
+		
+		while (caseToBlankQ > 0) {
+			
+			int row = Sudoku.getRandom(0, 8);
+			int col = Sudoku.getRandom(0, 8);
+			
+			String caseS = Sudoku.caseCoordToStr(row, col);
+			
+			if(!casesDone.containsValue(caseS)){
+				casesDone.put(i, caseS);
+				this.grid[row][col] = 0;
+				caseToBlankQ--;
+				i++;
+			}
+			
+		}
+		
+	}
+	
+	private static String caseCoordToStr(int row, int col){
+		
+		return Integer.toString(row)+Integer.toString(col);
+		
+	}
+	
+	private static int[] caseStrToCoord(String sCase){
+		
+		int[] res = new int[2];
+		
+		res[0] = Integer.parseInt(String.valueOf(sCase.charAt(0))) -1;
+		res[1] = Integer.parseInt(String.valueOf(sCase.charAt(1))) -1;
+		
+		return res;
+
+	}
+	
 }
