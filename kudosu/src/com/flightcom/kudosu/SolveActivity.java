@@ -92,6 +92,11 @@ public class SolveActivity extends Activity {
 						String posY = Integer.toString(3*j+l+1);
 						
 						String draw = "";
+						
+						int area = Sudoku.getAreaFromCase(Sudoku.caseCoordToInt(Integer.parseInt(posX), Integer.parseInt(posY)));
+						if(area %2 == 0)
+							draw += "gray_";
+						
 						switch(Integer.parseInt(posX) % 3){
 							case 0: draw += "bottom"; break;
 							case 1: draw += "top"; break;
