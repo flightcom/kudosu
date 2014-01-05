@@ -21,6 +21,7 @@ import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 
 public class SolveActivity extends Activity {
@@ -45,6 +46,7 @@ public class SolveActivity extends Activity {
 		Button bt9 = (Button) findViewById(R.id.button9);
 		
 		Button btDel = (Button) findViewById(R.id.buttonDel);
+		Button btVal = (Button) findViewById(R.id.buttonValider);
 
 		bt1.setOnClickListener(clickNumberListener);
 		bt2.setOnClickListener(clickNumberListener);
@@ -57,6 +59,7 @@ public class SolveActivity extends Activity {
 		bt9.setOnClickListener(clickNumberListener);
 		
 		btDel.setOnClickListener(clickDelListener);
+		btVal.setOnClickListener(validateListener);
 
 		// On récupère les dimensions de l'écran
 		DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -86,10 +89,13 @@ public class SolveActivity extends Activity {
 					lCaseVert.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
 					for(int l = 0; l < 3; l++){
-						EditText caseFinale = new EditText(this);
-						final Drawable coin;
+
 						String posX = Integer.toString(3*i+k+1);
 						String posY = Integer.toString(3*j+l+1);
+
+						EditText caseFinale = new EditText(this);
+						caseFinale.setId(Sudoku.caseCoordToInt(Integer.parseInt(posX), Integer.parseInt(posY)));
+						final Drawable coin;
 						
 						String draw = "";
 						
@@ -201,13 +207,15 @@ public class SolveActivity extends Activity {
 	} 
 	
 	private OnClickListener clickNumberListener = new View.OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			Button bt = (Button) v;
 			String value = bt.getText().toString();
 			selectedCase.setText(value);
+			int[] coord = Sudoku.caseIntToCoor(selectedCase.getId());
+			sudoku.gridUser[coord[0]][coord[1]] = Integer.parseInt(value);
 			
 		}
 	};
@@ -228,6 +236,24 @@ public class SolveActivity extends Activity {
 		public boolean onKey(View v, int keyCode, KeyEvent event) {
 			// TODO Auto-generated method stub
 			return false;
+		}
+	};
+	
+	private OnClickListener validateListener = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			boolean isSuccessfullyFilled = true;
+			for(int i = 0; i < sudoku.gridFull.length; i++){
+				for (int j : sudoku.gridFull[i]){
+					if(sudoku.gridFull[i][j] != sudoku.gridUser[i][j]){
+						isSuccessfullyFilled = false;
+					}
+				}
+			}
+			if(isSuccessfullyFilled)
+				Toast.makeText(getApplicationContext(), "BRAVO !!!", Toast.LENGTH_SHORT).show();
 		}
 	};
 

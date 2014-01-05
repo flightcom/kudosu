@@ -13,12 +13,14 @@ public class Sudoku {
 	ArrayList<Integer> numbersList = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9));
 	int[][] grid = new int[9][9];
 	int[][] gridFull = new int[9][9];
+	int[][] gridUser = new int[9][9];
 
 	public Sudoku(int level){
 		
 		this.init();
 		this.gridFull = this.grid;
 		this.setDifficulty(level);
+		this.gridUser = this.grid;
 
 	}
 
@@ -278,4 +280,14 @@ public class Sudoku {
 		return res;
 
 	}
-}
+
+	public static int [] caseIntToCoor(int iCase){
+		
+		int[] res = new int[2];
+		
+		res[0] = Integer.parseInt(String.valueOf(Integer.toString(iCase).charAt(0))) -1;
+		res[1] = Integer.parseInt(String.valueOf(Integer.toString(iCase).charAt(1))) -1;
+		
+		return res;
+
+	}}
