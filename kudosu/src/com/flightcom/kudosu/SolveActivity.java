@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.InputType;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -246,14 +247,17 @@ public class SolveActivity extends Activity {
 			// TODO Auto-generated method stub
 			boolean isSuccessfullyFilled = true;
 			for(int i = 0; i < sudoku.gridFull.length; i++){
-				for (int j : sudoku.gridFull[i]){
+				for (int j = 0; j < sudoku.gridFull[i].length; j++){
+					Log.e(null, Integer.toString(sudoku.gridFull[i][j]) + ":" + Integer.toString(sudoku.gridUser[i][j]));
 					if(sudoku.gridFull[i][j] != sudoku.gridUser[i][j]){
 						isSuccessfullyFilled = false;
 					}
 				}
 			}
-			if(isSuccessfullyFilled)
+			if(isSuccessfullyFilled == true)
 				Toast.makeText(getApplicationContext(), "BRAVO !!!", Toast.LENGTH_SHORT).show();
+			else
+				Toast.makeText(getApplicationContext(), "BOUUH !!!", Toast.LENGTH_SHORT).show();
 		}
 	};
 

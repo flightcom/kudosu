@@ -18,9 +18,7 @@ public class Sudoku {
 	public Sudoku(int level){
 		
 		this.init();
-		this.gridFull = this.grid;
 		this.setDifficulty(level);
-		this.gridUser = this.grid;
 
 	}
 
@@ -30,7 +28,7 @@ public class Sudoku {
 		int maxAttempts = 3;
 		int attempts = 0;
 		
-		for (int i = 0; i < this.grid.length; i++){
+		for (int i = 0; i < this.gridFull.length; i++){
 
 			int[] row = new int[9];
 			if (attempts == maxAttempts)
@@ -47,8 +45,8 @@ public class Sudoku {
 
 				// On récupère les chiffres en amont dans la colonne de la grille 
 				for (int k = 0; k < i+1; k++){
-					if(!forbiddenNumbs.contains(this.grid[k][j]))
-						forbiddenNumbs.add(this.grid[k][j]);
+					if(!forbiddenNumbs.contains(this.gridFull[k][j]))
+						forbiddenNumbs.add(this.gridFull[k][j]);
 				}
 				
 				// On récupère les chiffres en amont dans la ligne de la grille
@@ -92,8 +90,10 @@ public class Sudoku {
 
 			//Log.e(null, sCol);
 
-			for (int j = 0; j < this.grid[i].length; j++){
+			for (int j = 0; j < this.gridFull[i].length; j++){
+				this.gridFull[i][j] = row[j];
 				this.grid[i][j] = row[j];
+				this.gridUser[i][j] = row[j];
 			}
 		}
 	}
@@ -246,6 +246,7 @@ public class Sudoku {
 			if(!casesDone.containsValue(caseS)){
 				casesDone.put(i, caseS);
 				this.grid[row][col] = 0;
+				this.gridUser[row][col] = 0;
 				caseToBlankQ--;
 				i++;
 			}
