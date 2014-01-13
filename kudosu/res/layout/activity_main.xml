@@ -3,30 +3,18 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <ImageView
-        android:contentDescription="@string/main_image"
+    <Button
+        android:id="@+id/buttonPlay"
+        android:layout_weight="50"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    
-    <LinearLayout 
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:gravity="bottom" >
+        android:layout_height="wrap_content"
+        android:text="@string/play" />
 
-	    <Button
-	        android:id="@+id/buttonPlay"
-	        android:layout_weight="50"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="@string/play" />
-	
-	    <Button
-	        android:id="@+id/buttonSolve"
-	        android:layout_weight="50"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="@string/solve" />
-	
-	</LinearLayout>
-	
+    <Button
+        android:id="@+id/buttonSolve"
+        android:layout_weight="50"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/solve" />
+		
 </LinearLayout>

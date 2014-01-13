@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
 		
 		@Override
 		public void onClick(View v){
-			Intent playIntent = new Intent(getApplicationContext(), PlayActivity.class);
+			Intent playIntent = new Intent(getApplicationContext(), LevelSelectionActivity.class);
 			startActivity(playIntent);
 		}
 	};

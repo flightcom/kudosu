@@ -24,20 +24,28 @@
         </activity>
         <activity
             android:name="com.flightcom.kudosu.PlayActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_play"
-            android:parentActivityName="MainActivity" >
+            android:parentActivityName="MainActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
         </activity>
-
         <activity
             android:name="com.flightcom.kudosu.SolveActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_solve"
-            android:parentActivityName="MainActivity" >
+            android:parentActivityName="MainActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
-        </activity>    </application>
+        </activity>
+        <activity
+            android:name="com.flightcom.kudosu.LevelSelectionActivity"
+            android:label="@string/title_activity_level_selection" >
+        </activity>
+    </application>
 
 </manifest>

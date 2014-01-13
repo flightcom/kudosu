@@ -9,7 +9,6 @@
     <string name="solve">Solve</string>
     <string name="title_activity_play">Play !</string>
     <string name="title_activity_solve">Solver !</string>
-
     <string name="one">1</string>
     <string name="two">2</string>
     <string name="three">3</string>
@@ -21,6 +20,13 @@
     <string name="nine">9</string>
     <string name="delete">del</string>
     <string name="back">back</string>
-    
     <string name="validate">Valider</string>
+    <string name="title_activity_level_selection">LevelSelectionActivity</string>
+    
+    <string name="level1">Easy</string>
+    <string name="level2">Medium</string>
+    <string name="level3">Hard</string>
+    <string name="level4">Very Hard</string>
+    <string name="level5">Not Enought ?</string>
+
 </resources>

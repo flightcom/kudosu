@@ -11,8 +11,11 @@ import android.util.Log;
 public class Sudoku {
 	
 	ArrayList<Integer> numbersList = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9));
+	// Grille de départ
 	int[][] grid = new int[9][9];
+	// Grille remplie
 	int[][] gridFull = new int[9][9];
+	// Grille de départ avec remplissage du joueur
 	int[][] gridUser = new int[9][9];
 
 	public Sudoku(int level){
@@ -34,7 +37,7 @@ public class Sudoku {
 			if (attempts == maxAttempts)
 				i = 0;
 			
-			Log.e(null, "actual row : " + Integer.toString(i) + ", attempts : "+Integer.toString(attempts));
+			//Log.e(null, "actual row : " + Integer.toString(i) + ", attempts : "+Integer.toString(attempts));
 
 			attempts = 0;
 			
@@ -222,34 +225,82 @@ public class Sudoku {
 	
 	private void setDifficulty(int level){
 		
-		int caseToBlankQ = 0;
-		HashMap<Integer, String> casesDone = new HashMap<Integer, String>();
+		int nbCases = 81;
+		int givens =  0;
+		int nbDigitByCaseMin = 0;
+		int nbDigitByCaseNbAtMin = 0;
+		int countDigitMin = 0;
+		int countDigitNbAtMin = 0;
+		ArrayList<Integer> casesDone = new ArrayList<Integer>();
 		int i = 0;
 		
 		switch (level) {
 		
-			case 1: caseToBlankQ = 20; break;
-			case 2: caseToBlankQ = 25; break;
-			case 3: caseToBlankQ = 30; break;
-			case 4: caseToBlankQ = 35; break;
-			case 5: caseToBlankQ = 40; break;
+			case 1: 
+				givens = 32;
+				nbDigitByCaseMin = 2;
+				nbDigitByCaseNbAtMin = -1;
+				countDigitMin = 3;
+				countDigitNbAtMin = -1;
+				break;
+			case 2: 
+				givens = 30;
+				nbDigitByCaseMin = 1;
+				nbDigitByCaseNbAtMin = 2;
+				countDigitMin = 2;
+				countDigitNbAtMin = 2;
+				break;
+			case 3: 
+				givens = 28;
+				nbDigitByCaseMin = 1;
+				nbDigitByCaseNbAtMin = 4;
+				countDigitMin = 1;
+				countDigitNbAtMin = 1;
+				break;
+			case 4: 
+				givens = 26;
+				nbDigitByCaseMin = 0;
+				nbDigitByCaseNbAtMin =-1;
+				countDigitMin = 1;
+				countDigitNbAtMin = 1;
+				break;
+			case 5: 
+				givens = 24;
+				nbDigitByCaseMin = 0;
+				nbDigitByCaseNbAtMin =-1;
+				countDigitMin = 1;
+				countDigitNbAtMin = 1;
+				break;
 			
 		}
 		
-		while (caseToBlankQ > 0) {
+		while (nbCases > givens) {
 			
 			int row = Sudoku.getRandom(0, 8);
 			int col = Sudoku.getRandom(0, 8);
 			
-			String caseS = Sudoku.caseCoordToStr(row, col);
+			int caseI = Sudoku.caseCoordToInt(row, col);
+			int caseIR = Sudoku.caseCoordToInt(8-row, 8-col);
 			
-			if(!casesDone.containsValue(caseS)){
-				casesDone.put(i, caseS);
-				this.grid[row][col] = 0;
-				this.gridUser[row][col] = 0;
-				caseToBlankQ--;
-				i++;
-			}
+			int digit = this.grid[row][col];
+			int digitR = this.grid[8-row][8-col];
+			int area = Sudoku.getAreaFromCase(caseI);
+			
+			if(this.countDigitInArea(area) == nbDigitByCaseMin) continue;
+			if(this.countDigitInGrid(digit) == countDigitMin) continue;
+			if(this.countDigitInGrid(digitR) == countDigitMin) continue;
+			if(casesDone.contains(caseI)) continue;
+				
+			casesDone.add(caseI);
+			this.grid[row][col] = 0;
+			this.gridUser[row][col] = 0;
+			Log.e(null, Integer.toString(caseI));
+			nbCases--;
+			this.grid[8-row][8-col] = 0;
+			this.gridUser[8-row][8-col] = 0;
+			Log.e(null, Integer.toString(caseIR));
+			nbCases--;
+			i++;
 			
 		}
 		
@@ -276,7 +327,7 @@ public class Sudoku {
 		
 		int res = 0;
 		
-		res = Integer.parseInt(Integer.toString(row)+Integer.toString(col));
+		res = Integer.parseInt(Integer.toString(row+1)+Integer.toString(col+1));
 		
 		return res;
 
@@ -291,4 +342,34 @@ public class Sudoku {
 		
 		return res;
 
-	}}
+	}
+
+	public int countDigitInGrid(int digit){
+		
+		int count = 0;
+		
+		for(int i = 0; i < this.grid.length; i++){
+			for(int j = 0; j < this.grid[i].length; j++){
+				if(this.grid[i][j] == digit)
+					count++;
+			}
+		}
+		
+		return count;
+		
+	}
+	
+	public int countDigitInArea(int area){
+		
+		int count = 0;
+		int [] digitInArea = this.areaToArray(area);
+		for(int x : digitInArea){
+			if( x != 0)
+				count++;
+		}
+		
+		return count;
+	}
+	
+
+}
