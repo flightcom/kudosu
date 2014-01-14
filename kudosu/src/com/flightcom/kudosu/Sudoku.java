@@ -237,35 +237,35 @@ public class Sudoku {
 		switch (level) {
 		
 			case 1: 
-				givens = 32;
+				givens = 34;
 				nbDigitByCaseMin = 2;
 				nbDigitByCaseNbAtMin = -1;
 				countDigitMin = 3;
 				countDigitNbAtMin = -1;
 				break;
 			case 2: 
-				givens = 30;
+				givens = 32;
 				nbDigitByCaseMin = 1;
 				nbDigitByCaseNbAtMin = 2;
 				countDigitMin = 2;
 				countDigitNbAtMin = 2;
 				break;
 			case 3: 
-				givens = 28;
+				givens = 30;
 				nbDigitByCaseMin = 1;
 				nbDigitByCaseNbAtMin = 4;
 				countDigitMin = 1;
 				countDigitNbAtMin = 1;
 				break;
 			case 4: 
-				givens = 26;
+				givens = 28;
 				nbDigitByCaseMin = 0;
 				nbDigitByCaseNbAtMin =-1;
 				countDigitMin = 1;
 				countDigitNbAtMin = 1;
 				break;
 			case 5: 
-				givens = 24;
+				givens = 26;
 				nbDigitByCaseMin = 0;
 				nbDigitByCaseNbAtMin =-1;
 				countDigitMin = 1;
@@ -292,14 +292,16 @@ public class Sudoku {
 			if(casesDone.contains(caseI)) continue;
 				
 			casesDone.add(caseI);
+			casesDone.add(caseIR);
 			this.grid[row][col] = 0;
 			this.gridUser[row][col] = 0;
-			Log.e(null, Integer.toString(caseI));
+			//Log.e(null, Integer.toString(caseI));
 			nbCases--;
 			this.grid[8-row][8-col] = 0;
 			this.gridUser[8-row][8-col] = 0;
-			Log.e(null, Integer.toString(caseIR));
+			//Log.e(null, Integer.toString(caseIR));
 			nbCases--;
+			//@ 	Log.e(null, Integer.toString(nbCases));
 			i++;
 			
 		}

@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class LevelSelectionActivity extends Activity {
 
@@ -20,7 +21,7 @@ public class LevelSelectionActivity extends Activity {
 		Button level3 = (Button) findViewById(R.id.buttonLevel3);
 		Button level4 = (Button) findViewById(R.id.buttonLevel4);
 		Button level5 = (Button) findViewById(R.id.buttonLevel5);
-		
+
 		level1.setOnClickListener(onLevelSelectionClickListener);
 		level2.setOnClickListener(onLevelSelectionClickListener);
 		level3.setOnClickListener(onLevelSelectionClickListener);
@@ -37,10 +38,22 @@ public class LevelSelectionActivity extends Activity {
 
 	private OnClickListener onLevelSelectionClickListener = new OnClickListener(){
 		
+		int level;
+		
 		@Override
 		public void onClick(View v){
+			
+			switch(v.getId()){
+				case R.id.buttonLevel1: level = 1; break;
+				case R.id.buttonLevel2: level = 2; break;
+				case R.id.buttonLevel3: level = 3; break;
+				case R.id.buttonLevel4: level = 4; break;
+				case R.id.buttonLevel5: level = 5; break;
+			}
+			
 			Intent playIntent = new Intent(getApplicationContext(), PlayActivity.class);
-			playIntent.putExtra("level", 5);
+			playIntent.putExtra("level", level);
+			Toast.makeText(getApplicationContext(), "Level : " + level, Toast.LENGTH_SHORT).show();
 			startActivity(playIntent);
 		}
 	};

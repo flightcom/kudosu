@@ -3,6 +3,7 @@ package com.flightcom.kudosu;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -28,7 +29,7 @@ import android.widget.LinearLayout.LayoutParams;
 public class PlayActivity extends Activity {
 	
 	EditText selectedCase = null;
-	Sudoku sudoku = new Sudoku(5);
+	Sudoku sudoku;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -36,6 +37,10 @@ public class PlayActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_solve);
 		
+		Bundle bundle = getIntent().getExtras();
+		int level = bundle.getInt("level");
+		sudoku = new Sudoku(level);
+
 		Button bt1 = (Button) findViewById(R.id.button1);
 		Button bt2 = (Button) findViewById(R.id.button2);
 		Button bt3 = (Button) findViewById(R.id.button3);
