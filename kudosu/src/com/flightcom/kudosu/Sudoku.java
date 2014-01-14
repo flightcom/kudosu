@@ -31,72 +31,64 @@ public class Sudoku {
 		int maxAttempts = 3;
 		int attempts = 0;
 		
-		for (int i = 0; i < this.gridFull.length; i++){
+		rowLoop : for (int i = 0; i < this.gridFull.length; i++){
+
+			Log.e(null, "> Row " + i);
 
 			int[] row = new int[9];
-			if (attempts == maxAttempts)
-				i = 0;
-			
-			//Log.e(null, "actual row : " + Integer.toString(i) + ", attempts : "+Integer.toString(attempts));
 
-			attempts = 0;
-			
-			for(int j = 0; j < row.length; j++){
+			colLoop : for(int z = 0; z < row.length; z++){
+
+				//Log.e(null, "--> Col " + j);
 
 				ArrayList<Integer> numbs = (ArrayList<Integer>) this.numbersList.clone();
 				ArrayList<Integer> forbiddenNumbs = new ArrayList<Integer>();
 
 				// On récupère les chiffres en amont dans la colonne de la grille 
 				for (int k = 0; k < i+1; k++){
-					if(!forbiddenNumbs.contains(this.gridFull[k][j]))
-						forbiddenNumbs.add(this.gridFull[k][j]);
+					if(!forbiddenNumbs.contains(this.gridFull[k][z]))
+						forbiddenNumbs.add(this.gridFull[k][z]);
 				}
 				
 				// On récupère les chiffres en amont dans la ligne de la grille
-				for (int l = 0; l < j; l++){
+				for (int l = 0; l < z; l++){
 					if(!forbiddenNumbs.contains(row[l]))
 						forbiddenNumbs.add(row[l]);
 				}
 				
 				// On récupère ceux de la case
-				int area = Sudoku.getAreaFromCase(Integer.parseInt(Integer.toString(i+1)+Integer.toString(j+1)));
+				int area = Sudoku.getAreaFromCase(Integer.parseInt(Integer.toString(i+1)+Integer.toString(z+1)));
 				int[] areaValues = this.areaToArray(area);
 				for(int x : areaValues){
 					if(!forbiddenNumbs.contains(x))
 						forbiddenNumbs.add(x);
 				}
 				
-				//Log.e(null, "forbidden nums : "+forbiddenNumbs.toString());
-				
 				numbs.removeAll(forbiddenNumbs);
-
-				//Log.e(null, "length : "+Integer.toString(numbs.size()));
-				//Log.e(null, "allowed nums : "+numbs.toString());
-
-				Collections.shuffle(numbs);
 				
 				if(numbs.size() == 0){
-					if(attempts >= maxAttempts){
-						break;
+					if(attempts == maxAttempts){
+						i = ( i > 1 ) ? --i : 0;
+						z = 0;
+						attempts = 0;
+						continue rowLoop;
 					} else {
-						j = 0;
+						z = 0;
 						attempts++;
-						continue;
+						continue colLoop;
 					}
-				} else {
-					attempts = 0;
 				}
 				
-				row[j] = numbs.get(0);
-				//Log.e(null, "number choosen : " + Integer.toString(row[i]));
+				Collections.shuffle(numbs);
+				row[z] = numbs.get(0);
 			}
-
-			//Log.e(null, sCol);
-
-			for (int j = 0; j < this.gridFull[i].length; j++){
-				this.gridFull[i][j] = row[j];
-				this.grid[i][j] = row[j];
-				this.gridUser[i][j] = row[j];
+			
+			if(row.length == this.gridFull[i].length) {
+				for (int j = 0; j < this.gridFull[i].length; j++){
+					this.gridFull[i][j] = row[j];
+					this.grid[i][j] = row[j];
+					this.gridUser[i][j] = row[j];
+				}
 			}
 		}
 	}
@@ -289,7 +281,7 @@ public class Sudoku {
 			if(this.countDigitInArea(area) == nbDigitByCaseMin) continue;
 			if(this.countDigitInGrid(digit) == countDigitMin) continue;
 			if(this.countDigitInGrid(digitR) == countDigitMin) continue;
-			if(casesDone.contains(caseI)) continue;
+			if(casesDone.contains(caseI) || casesDone.contains(caseIR)) continue;
 				
 			casesDone.add(caseI);
 			casesDone.add(caseIR);
@@ -301,7 +293,7 @@ public class Sudoku {
 			this.gridUser[8-row][8-col] = 0;
 			//Log.e(null, Integer.toString(caseIR));
 			nbCases--;
-			//@ 	Log.e(null, Integer.toString(nbCases));
+			//Log.e(null, Integer.toString(nbCases));
 			i++;
 			
 		}
