@@ -33,7 +33,7 @@ public class Sudoku {
 		
 		rowLoop : for (int i = 0; i < this.gridFull.length; i++){
 
-			Log.e(null, "> Row " + i);
+			//Log.e(null, "> Row " + i);
 
 			int[] row = new int[9];
 
@@ -67,16 +67,14 @@ public class Sudoku {
 				numbs.removeAll(forbiddenNumbs);
 				
 				if(numbs.size() == 0){
+					z = 0;
+					attempts++;
 					if(attempts == maxAttempts){
 						i = ( i > 1 ) ? --i : 0;
-						z = 0;
 						attempts = 0;
 						continue rowLoop;
-					} else {
-						z = 0;
-						attempts++;
-						continue colLoop;
 					}
+					continue colLoop;
 				}
 				
 				Collections.shuffle(numbs);
@@ -278,7 +276,9 @@ public class Sudoku {
 			int digitR = this.grid[8-row][8-col];
 			int area = Sudoku.getAreaFromCase(caseI);
 			
-			if(this.countDigitInArea(area) == nbDigitByCaseMin) continue;
+			//Log.e(null, Integer.toString(area) + " : " + Integer.toString(this.countDigitInArea(area)));
+			
+			if(this.countDigitInArea(area) <= nbDigitByCaseMin + 1) continue;
 			if(this.countDigitInGrid(digit) == countDigitMin) continue;
 			if(this.countDigitInGrid(digitR) == countDigitMin) continue;
 			if(casesDone.contains(caseI) || casesDone.contains(caseIR)) continue;

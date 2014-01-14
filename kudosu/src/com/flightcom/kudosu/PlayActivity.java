@@ -35,7 +35,7 @@ public class PlayActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_solve);
+		setContentView(R.layout.activity_play);
 		
 		Bundle bundle = getIntent().getExtras();
 		int level = bundle.getInt("level");
@@ -71,6 +71,7 @@ public class PlayActivity extends Activity {
 		DisplayMetrics displaymetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 		int width = displaymetrics.widthPixels;
+		int height = displaymetrics.heightPixels;
 		
 		LinearLayout lSolve = (LinearLayout) findViewById(R.id.gridlayout);
 		//LinearLayout lSolve = new LinearLayout(this);
@@ -149,10 +150,13 @@ public class PlayActivity extends Activity {
 						//caseFinale.setText(Integer.toString(Sudoku.getAreaFromCase(caseNum_I)));
 						caseFinale.setText(caseValueS);
 						//caseFinale.setText(posX+posY);
-						if ( caseValueI != 0 )
+						if ( caseValueI != 0 ) {
 							caseFinale.setFocusable(false);
-						else
-							caseFinale.setTextColor(Color.GRAY);
+							caseFinale.setTextColor(Color.BLACK);
+						}
+						else {
+							caseFinale.setTextColor(Color.BLUE);
+						}
 						caseFinale.setTextSize(24);
 						caseFinale.setWidth((int)width/9);
 						caseFinale.setHeight((int)width/9);
@@ -174,6 +178,15 @@ public class PlayActivity extends Activity {
 			lSolve.addView(lCasesVert);
 		}
 		
+		int gridHeight = lSolve.getLayoutParams().height;
+		int buttonHeight = ((LinearLayout)findViewById(R.id.buttonlayout)).getLayoutParams().height;
+		Button btn = new Button(this);
+		btn.setText("TEST");
+		btn.setHeight(height - gridHeight - buttonHeight);
+		
+		LinearLayout root = (LinearLayout) findViewById(R.id.root);
+		root.addView(btn);
+		
 		//setContentView(lSolve);
 		//setContentView(R.layout.activity_solve);
 	}
@@ -181,21 +194,21 @@ public class PlayActivity extends Activity {
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+/*	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void setupActionBar() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 	}
-
-	@Override
+*/
+/*	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.play, menu);
 		return true;
 	}
-
-	@Override
+*/
+/*	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
@@ -211,7 +224,7 @@ public class PlayActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	} 
-	
+*/
 	private OnClickListener clickNumberListener = new View.OnClickListener() {
 
 		@Override
