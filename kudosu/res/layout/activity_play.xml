@@ -5,6 +5,12 @@
     android:layout_height="wrap_content"
     android:paddingTop="0dp" >
 
+    <Chronometer android:id="@+id/chrono"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="24sp" />
+    
     <LinearLayout android:id="@+id/gridlayout"
         android:orientation="vertical"
         android:layout_width="match_parent"

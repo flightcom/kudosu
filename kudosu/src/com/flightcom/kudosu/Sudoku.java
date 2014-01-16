@@ -17,6 +17,8 @@ public class Sudoku {
 	int[][] gridFull = new int[9][9];
 	// Grille de d√©part avec remplissage du joueur
 	int[][] gridUser = new int[9][9];
+	
+	boolean gridReady = false;
 
 	public Sudoku(int level){
 		
@@ -44,19 +46,19 @@ public class Sudoku {
 				ArrayList<Integer> numbs = (ArrayList<Integer>) this.numbersList.clone();
 				ArrayList<Integer> forbiddenNumbs = new ArrayList<Integer>();
 
-				// On r√©cup√®re les chiffres en amont dans la colonne de la grille 
+				// On récupère les chiffres en amont dans la colonne de la grille 
 				for (int k = 0; k < i+1; k++){
 					if(!forbiddenNumbs.contains(this.gridFull[k][z]))
 						forbiddenNumbs.add(this.gridFull[k][z]);
 				}
 				
-				// On r√©cup√®re les chiffres en amont dans la ligne de la grille
+				// On récupère les chiffres en amont dans la ligne de la grille
 				for (int l = 0; l < z; l++){
 					if(!forbiddenNumbs.contains(row[l]))
 						forbiddenNumbs.add(row[l]);
 				}
 				
-				// On r√©cup√®re ceux de la case
+				// On récupère ceux de la case
 				int area = Sudoku.getAreaFromCase(Integer.parseInt(Integer.toString(i+1)+Integer.toString(z+1)));
 				int[] areaValues = this.areaToArray(area);
 				for(int x : areaValues){
@@ -89,6 +91,9 @@ public class Sudoku {
 				}
 			}
 		}
+
+		this.gridReady = true;
+
 	}
 
 	static int getRandom(int start, int end){

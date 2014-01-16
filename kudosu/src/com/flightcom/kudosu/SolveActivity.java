@@ -15,14 +15,14 @@ public class SolveActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.activity_solve);
-//		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-//    	Toast.makeText(getApplicationContext(), "Take a picture of your grid", Toast.LENGTH_SHORT).show();
+		setContentView(R.layout.activity_solve);
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+    	Toast.makeText(getApplicationContext(), "Take a picture of your grid", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {        
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 	        if (resultCode == Activity.RESULT_OK) {
 	        	Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();

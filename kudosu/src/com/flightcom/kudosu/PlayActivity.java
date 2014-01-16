@@ -21,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnKeyListener;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ public class PlayActivity extends Activity {
 	
 	EditText selectedCase = null;
 	Sudoku sudoku;
+	Chronometer chrono;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -37,9 +39,12 @@ public class PlayActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play);
 		
+		LinearLayout root = (LinearLayout) findViewById(R.id.root);
+
 		Bundle bundle = getIntent().getExtras();
 		int level = bundle.getInt("level");
 		sudoku = new Sudoku(level);
+		chrono = (Chronometer) findViewById(R.id.chrono);
 
 		Button bt1 = (Button) findViewById(R.id.button1);
 		Button bt2 = (Button) findViewById(R.id.button2);
@@ -67,17 +72,13 @@ public class PlayActivity extends Activity {
 		btDel.setOnClickListener(clickDelListener);
 		btVal.setOnClickListener(validateListener);
 
-		// On r√©cup√®re les dimensions de l'√©cran
+		// On récupère les dimensions de l'écran
 		DisplayMetrics displaymetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 		int width = displaymetrics.widthPixels;
 		int height = displaymetrics.heightPixels;
 		
 		LinearLayout lSolve = (LinearLayout) findViewById(R.id.gridlayout);
-		//LinearLayout lSolve = new LinearLayout(this);
-		//lSolve.setOrientation(LinearLayout.VERTICAL);
-		//lSolve.setGravity(Gravity.CENTER_HORIZONTAL);
-		//lSolve.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 
 		for(int i = 0; i < 3; i++){
 			LinearLayout lCasesVert = new LinearLayout(this);
@@ -181,50 +182,17 @@ public class PlayActivity extends Activity {
 		int gridHeight = lSolve.getLayoutParams().height;
 		int buttonHeight = ((LinearLayout)findViewById(R.id.buttonlayout)).getLayoutParams().height;
 		Button btn = new Button(this);
-		btn.setText("TEST");
+		btn.setText("Valider");
+		btn.setOnClickListener(validateListener);
 		btn.setHeight(height - gridHeight - buttonHeight);
 		
-		LinearLayout root = (LinearLayout) findViewById(R.id.root);
 		root.addView(btn);
 		
+		chrono.start();
 		//setContentView(lSolve);
 		//setContentView(R.layout.activity_solve);
 	}
 
-	/**
-	 * Set up the {@link android.app.ActionBar}, if the API is available.
-	 */
-/*	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void setupActionBar() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			getActionBar().setDisplayHomeAsUpEnabled(true);
-		}
-	}
-*/
-/*	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.play, menu);
-		return true;
-	}
-*/
-/*	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	} 
-*/
 	private OnClickListener clickNumberListener = new View.OnClickListener() {
 
 		@Override
@@ -266,14 +234,20 @@ public class PlayActivity extends Activity {
 			boolean isSuccessfullyFilled = true;
 			for(int i = 0; i < sudoku.gridFull.length; i++){
 				for (int j = 0; j < sudoku.gridFull[i].length; j++){
-					Log.e(null, Integer.toString(sudoku.gridFull[i][j]) + ":" + Integer.toString(sudoku.gridUser[i][j]));
+					//Log.e(null, Integer.toString(sudoku.gridFull[i][j]) + ":" + Integer.toString(sudoku.gridUser[i][j]));
+					EditText et = (EditText) findViewById(Sudoku.caseCoordToInt(i, j));
 					if(sudoku.gridFull[i][j] != sudoku.gridUser[i][j]){
+						et.setBackgroundColor(Color.RED);
 						isSuccessfullyFilled = false;
+					} else {
+						et.setBackgroundColor(Color.GREEN);
 					}
 				}
 			}
-			if(isSuccessfullyFilled == true)
+			if(isSuccessfullyFilled == true){
+				chrono.stop();
 				Toast.makeText(getApplicationContext(), "BRAVO !!!", Toast.LENGTH_SHORT).show();
+			}
 			else
 				Toast.makeText(getApplicationContext(), "BOUUH !!!", Toast.LENGTH_SHORT).show();
 		}
