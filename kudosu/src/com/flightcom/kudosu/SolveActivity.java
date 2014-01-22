@@ -13,7 +13,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,6 +36,7 @@ public class SolveActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solve);
 		RelativeLayout lSolve = (RelativeLayout) findViewById(R.id.canvas);
+		RelativeLayout lGrid = (RelativeLayout) findViewById(R.id.grid);
 
         // Create an instance of Camera
         mCamera = getCameraInstance();
@@ -41,30 +45,13 @@ public class SolveActivity extends Activity {
         mPreview = new CameraPreview(this, mCamera);
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mPreview);
-        
+
         DisplayMetrics metrics = this.getResources().getDisplayMetrics();
         width = metrics.widthPixels;
-		
-		Paint paint = new Paint();
-		int dim;
-		int caseDim;
-		Canvas canvas = new Canvas();
-		dim = (int) ((Integer)width*0.9);
-		caseDim = (int)width/9;
-		paint.setColor(Color.WHITE);
-		canvas.drawLine(0, 0, 0, dim, paint);
-		canvas.drawLine(0, dim, dim, dim, paint);
-		canvas.drawLine(dim, dim, dim, 0, paint);
-		canvas.drawLine(dim, 0, 0, 0, paint);
-		for(int i = 1; i < 9; i++) {
-			canvas.drawLine(0, caseDim*i, dim, caseDim*i, paint);
-			canvas.drawLine(caseDim*i, 0, caseDim*i, dim, paint);
-		}
 
-        //drawView = new DrawView(this, width);
-        ImageView iv = (ImageView)findViewById(R.id.imageview);
-        iv.draw(canvas);
-        
+        drawView = new DrawView(this, width);
+        lGrid.addView(drawView);
+
     }
 
 	@Override

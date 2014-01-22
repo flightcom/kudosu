@@ -9,10 +9,21 @@
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent" />
 	
-	<ImageView
-	    android:id="@+id/imageview"
-	    android:layout_centerInParent="true"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent" />
+	<RelativeLayout 
+	    android:id="@+id/grid"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_centerHorizontal="true"
+	    android:layout_centerVertical="true"
+	    android:gravity="center" />
 
+	<Button 
+		android:id="@+id/buttonPicture" 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+	    android:layout_centerHorizontal="true"
+		android:text="@string/text_button_picture" />
+	
+	
 </RelativeLayout>

@@ -4,7 +4,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout.LayoutParams;
+import android.widget.LinearLayout;
 import android.util.Log;
 
 public class DrawView extends View {
@@ -15,9 +19,16 @@ public class DrawView extends View {
 
 	public DrawView(Context context, int dimension) {
 		super(context);
-		dim = (int) ((Integer)dimension*0.9);
+		dim = (int) ((Integer)dimension*0.95);
 		caseDim = (int)this.dim/9;
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dim, dim);
+        //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.CENTER;
+        this.setLayoutParams(params);
+
 		paint.setColor(Color.WHITE);
+		paint.setStrokeWidth(3);
 	}
 
 	@Override

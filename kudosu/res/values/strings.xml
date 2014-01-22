@@ -30,5 +30,6 @@
     <string name="level5">Not Enought ?</string>
     
     <string name="image_description">description</string>
+    <string name="text_button_picture">Shoot</string>
 
 </resources>
