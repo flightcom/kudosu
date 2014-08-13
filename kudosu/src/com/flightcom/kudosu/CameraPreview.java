@@ -2,10 +2,12 @@ package com.flightcom.kudosu;
 
 import java.io.IOException;
 import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.Camera;
+import android.hardware.Camera.Parameters;
 import android.os.Build;
 import android.util.Log;
 import android.view.Display;
@@ -51,6 +53,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try {
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
+            Camera.AutoFocusCallback autoFocusCallback = new Camera.AutoFocusCallback() {
+                @Override
+                public void onAutoFocus(boolean success, Camera camera) {
+                }
+            };
+            mCamera.autoFocus(autoFocusCallback);
         } catch (IOException e) {
             Log.d("CameraView", "Error setting camera preview: " + e.getMessage());
         }
@@ -109,7 +117,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 cameraParams.set(CAMERA_PARAM_ORIENTATION, CAMERA_PARAM_PORTRAIT);
             } else {
                 cameraParams.set(CAMERA_PARAM_ORIENTATION, CAMERA_PARAM_LANDSCAPE);
-                cameraParams.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE); 
             }
         } else { // for 2.2 and later
             int angle;
@@ -135,6 +142,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCamera.setDisplayOrientation(angle);
         }
 
+        List<String> focusModes = cameraParams.getSupportedFocusModes();
+        if (focusModes.contains(Parameters.FOCUS_MODE_CONTINUOUS_VIDEO))
+        	cameraParams.setFocusMode(Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+        
         cameraParams.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
         cameraParams.setPictureSize(mPictureSize.width, mPictureSize.height);
         if (DEBUGGING) {
@@ -149,4 +160,5 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public boolean isPortrait() {
         return (mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
     }
+    
 }

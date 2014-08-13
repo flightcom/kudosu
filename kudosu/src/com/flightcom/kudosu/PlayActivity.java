@@ -3,11 +3,13 @@ package com.flightcom.kudosu;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.v4.app.NavUtils;
 import android.text.InputType;
 import android.util.DisplayMetrics;
@@ -20,10 +22,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnKeyListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 
@@ -57,8 +62,12 @@ public class PlayActivity extends Activity {
 		Button bt9 = (Button) findViewById(R.id.button9);
 		
 		Button btDel = (Button) findViewById(R.id.buttonDel);
+		Button btBack = (Button) findViewById(R.id.buttonBack);
+		Button btPause = (Button) findViewById(R.id.buttonPause);
 		Button btVal = (Button) findViewById(R.id.buttonValider);
 
+		Button[] buttons = { bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btDel, btBack, btPause, btVal };
+		
 		bt1.setOnClickListener(clickNumberListener);
 		bt2.setOnClickListener(clickNumberListener);
 		bt3.setOnClickListener(clickNumberListener);
@@ -158,7 +167,7 @@ public class PlayActivity extends Activity {
 						else {
 							caseFinale.setTextColor(Color.BLUE);
 						}
-						caseFinale.setTextSize(24);
+						caseFinale.setTextSize(36);
 						caseFinale.setWidth((int)width/9);
 						caseFinale.setHeight((int)width/9);
 						caseFinale.setCursorVisible(false);
@@ -180,17 +189,41 @@ public class PlayActivity extends Activity {
 		}
 		
 		int gridHeight = lSolve.getLayoutParams().height;
-		int buttonHeight = ((LinearLayout)findViewById(R.id.buttonlayout)).getLayoutParams().height;
-		Button btn = new Button(this);
-		btn.setText("Valider");
-		btn.setOnClickListener(validateListener);
-		btn.setHeight(height - gridHeight - buttonHeight);
+		LinearLayout buttonsLayout = (LinearLayout)findViewById(R.id.buttonlayout);
+		LayoutParams buttonsLayoutParams = (LayoutParams)buttonsLayout.getLayoutParams();
+		int buttonsHeight = ((LinearLayout)findViewById(R.id.buttonlayout)).getLayoutParams().height;
+
+		for(int i = 0; i < buttons.length; i++) {
+			LayoutParams childParams = (LayoutParams)buttons[i].getLayoutParams();
+			childParams.height = (height - gridHeight)/10;
+		}
 		
-		root.addView(btn);
-		
+//		buttonsLayoutParams.height = height - gridHeight;
+		//root.addView(btn);
+		 
 		chrono.start();
 		//setContentView(lSolve);
 		//setContentView(R.layout.activity_solve);
+	}
+
+	protected void onWindowFocusChanged() {
+		
+		View decorView = getWindow().getDecorView();
+		decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+		
+	}
+
+	protected void onResume() {
+		
+		super.onResume();
+		View decorView = getWindow().getDecorView();
+		decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+		
 	}
 
 	private OnClickListener clickNumberListener = new View.OnClickListener() {
