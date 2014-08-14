@@ -20,23 +20,21 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 
-public class PlayActivity extends Activity {
+public class SolveManualActivity extends Activity {
 	
 	EditText selectedCase = null;
-	Sudoku sudoku;
 	Chronometer chrono;
+	Sudoku sudoku;
 	
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_play);
+		setContentView(R.layout.activity_solve_manual);
 		
 		LinearLayout root = (LinearLayout) findViewById(R.id.root);
 
 		Bundle bundle = getIntent().getExtras();
-		int level = bundle.getInt("level");
-		sudoku = new Sudoku(level);
 		chrono = (Chronometer) findViewById(R.id.chrono);
 
 		Button bt1 = (Button) findViewById(R.id.button1);
@@ -51,10 +49,9 @@ public class PlayActivity extends Activity {
 		
 		Button btDel = (Button) findViewById(R.id.buttonDel);
 		Button btBack = (Button) findViewById(R.id.buttonBack);
-		Button btPause = (Button) findViewById(R.id.buttonPause);
 		Button btVal = (Button) findViewById(R.id.buttonValider);
 
-		Button[] buttons = { bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btDel, btBack, btPause, btVal };
+		Button[] buttons = { bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btDel, btBack, btVal };
 		
 		bt1.setOnClickListener(clickNumberListener);
 		bt2.setOnClickListener(clickNumberListener);
@@ -138,38 +135,11 @@ public class PlayActivity extends Activity {
 							}
 						});
 
-//						caseFinale.setOnTouchListener(new OnTouchListener(){
-//
-//							@Override
-//							public void onTouch(View v) {
-//								// TODO Auto-generated method stub
-//									if(v.hasFocus()){
-//										v.setBackgroundColor(Color.GREEN);
-//										selectedCase = (EditText) v;
-//									} else {
-//										v.setBackground(coin);
-//								}
-//							}
-//
-//						});
-						
 						caseFinale.setInputType(InputType.TYPE_NULL);
 						caseFinale.setBackground(coin);
-						int caseValueI = sudoku.getCaseAt(Integer.parseInt(posX), Integer.parseInt(posY));
-						String caseValueS = (caseValueI == 0) ? "" : Integer.toString(caseValueI);
-						String caseNum_S = posX + posY;
-						int caseNum_I = Integer.parseInt(caseNum_S);
-						caseFinale.setText(caseValueS);
-						if ( caseValueI != 0 ) {
-							caseFinale.setFocusable(false);
-							caseFinale.setTextColor(Color.BLACK);
-						}
-						else {
-							caseFinale.setTextColor(Color.BLUE);
-						}
 						caseFinale.setWidth((int)width/9);
 						caseFinale.setHeight((int)width/9);
-
+						
 						lCaseVert.addView(caseFinale);
 					}
 
@@ -183,21 +153,12 @@ public class PlayActivity extends Activity {
 		}
 		
 		int gridHeight = lSolve.getLayoutParams().height;
-		LinearLayout buttonsLayout = (LinearLayout)findViewById(R.id.buttonlayout);
-		LayoutParams buttonsLayoutParams = (LayoutParams)buttonsLayout.getLayoutParams();
-		int buttonsHeight = ((LinearLayout)findViewById(R.id.buttonlayout)).getLayoutParams().height;
 
 		for(int i = 0; i < buttons.length; i++) {
 			LayoutParams childParams = (LayoutParams)buttons[i].getLayoutParams();
-			childParams.height = (height - gridHeight)/10;
+			childParams.height = (height - gridHeight)/7;
 		}
 		
-//		buttonsLayoutParams.height = height - gridHeight;
-		//root.addView(btn);
-		 
-		chrono.start();
-		//setContentView(lSolve);
-		//setContentView(R.layout.activity_solve);
 	}
 
 	protected void onWindowFocusChanged() {
@@ -257,26 +218,6 @@ public class PlayActivity extends Activity {
 		
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			boolean isSuccessfullyFilled = true;
-			for(int i = 0; i < sudoku.gridFull.length; i++){
-				for (int j = 0; j < sudoku.gridFull[i].length; j++){
-					//Log.e(null, Integer.toString(sudoku.gridFull[i][j]) + ":" + Integer.toString(sudoku.gridUser[i][j]));
-					EditText et = (EditText) findViewById(Sudoku.caseCoordToInt(i, j));
-					if(sudoku.gridFull[i][j] != sudoku.gridUser[i][j]){
-						et.setBackgroundColor(Color.RED);
-						isSuccessfullyFilled = false;
-					} else {
-						et.setBackgroundColor(Color.GREEN);
-					}
-				}
-			}
-			if(isSuccessfullyFilled == true){
-				chrono.stop();
-				Toast.makeText(getApplicationContext(), "BRAVO !!!", Toast.LENGTH_SHORT).show();
-			}
-			else
-				Toast.makeText(getApplicationContext(), "BOUUH !!!", Toast.LENGTH_SHORT).show();
 		}
 	};
 

@@ -46,19 +46,19 @@ public class Sudoku {
 				ArrayList<Integer> numbs = (ArrayList<Integer>) this.numbersList.clone();
 				ArrayList<Integer> forbiddenNumbs = new ArrayList<Integer>();
 
-				// On récupère les chiffres en amont dans la colonne de la grille 
+				// On r√©cup√®re les chiffres en amont dans la colonne de la grille 
 				for (int k = 0; k < i+1; k++){
 					if(!forbiddenNumbs.contains(this.gridFull[k][z]))
 						forbiddenNumbs.add(this.gridFull[k][z]);
 				}
 				
-				// On récupère les chiffres en amont dans la ligne de la grille
+				// On r√©cup√®re les chiffres en amont dans la ligne de la grille
 				for (int l = 0; l < z; l++){
 					if(!forbiddenNumbs.contains(row[l]))
 						forbiddenNumbs.add(row[l]);
 				}
 				
-				// On récupère ceux de la case
+				// On r√©cup√®re ceux de la case
 				int area = Sudoku.getAreaFromCase(Integer.parseInt(Integer.toString(i+1)+Integer.toString(z+1)));
 				int[] areaValues = this.areaToArray(area);
 				for(int x : areaValues){
@@ -369,6 +369,25 @@ public class Sudoku {
 		
 		return count;
 	}
+
+	public boolean solve(){
+		
+		boolean solved = false;
+		
+		this.gridFull = this.gridUser;
+		
+		return solved;
+		
+	}
 	
+	private boolean checkCandidates(int row, int col) {
+		
+		boolean check = false;
+		
+		
+		
+		return check;
+		
+	}
 
 }

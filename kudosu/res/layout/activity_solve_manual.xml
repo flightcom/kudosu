@@ -92,23 +92,10 @@
 	        <Button android:id="@+id/button9"
 				style="@style/btnlook"
 	            android:text="@string/nine" />
-	
-	        <Button android:id="@+id/buttonPause"
-				style="@style/btnlook"
-	            android:text="@string/pause" />
-	        
-		</LinearLayout>
-		
-	    <LinearLayout android:id="@+id/buttonlayout4"
-	        android:weightSum="1"
-	        style="?android:attr/buttonBarStyle"
-	        android:orientation="horizontal"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" >
 	        
 	        <Button android:id="@+id/buttonValider"
 				style="@style/btnlook"
-	            android:text="@string/validate" />
+	            android:text="@string/solve" />
 
 		</LinearLayout>
 	        	

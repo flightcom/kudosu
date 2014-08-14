@@ -23,14 +23,13 @@
     <string name="validate">Valider</string>
     <string name="pause">Pause</string>
     <string name="title_activity_level_selection">Select a level</string>
-    
     <string name="level1">Easy</string>
     <string name="level2">Medium</string>
     <string name="level3">Hard</string>
     <string name="level4">Very Hard</string>
     <string name="level5">Not Enought ?</string>
-    
     <string name="image_description">description</string>
     <string name="text_button_picture">Shoot</string>
+    <string name="title_activity_solve_manual">SolveManualActivity</string>
 
 </resources>

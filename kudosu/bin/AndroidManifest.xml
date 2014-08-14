@@ -8,47 +8,54 @@
         android:minSdkVersion="16"
         android:targetSdkVersion="20" />
 
- 	<uses-permission android:name="android.permission.CAMERA" />
-	<uses-feature android:name="android.hardware.camera" />
-	<uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
-
-		<activity
-            android:name="com.flightcom.kudosu.MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.flightcom.kudosu.PlayActivity"
+            android:name=".PlayActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_play"
-            android:parentActivityName="MainActivity"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
         </activity>
         <activity
-            android:name="com.flightcom.kudosu.SolveActivity"
+            android:name=".SolveActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_solve"
-            android:parentActivityName="MainActivity"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
         </activity>
         <activity
-            android:name="com.flightcom.kudosu.LevelSelectionActivity"
+            android:name=".LevelSelectionActivity"
             android:label="@string/title_activity_level_selection" >
+        </activity>
+        <activity
+            android:name=".SolveManualActivity"
+            android:label="@string/title_activity_solve_manual"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 
