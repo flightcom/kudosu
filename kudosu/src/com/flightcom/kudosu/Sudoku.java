@@ -20,6 +20,8 @@ public class Sudoku {
 	
 	boolean gridReady = false;
 
+	public Sudoku(){}
+	
 	public Sudoku(int level){
 		
 		this.init();
@@ -59,7 +61,7 @@ public class Sudoku {
 				}
 				
 				// On récupère ceux de la case
-				int area = Sudoku.getAreaFromCase(Integer.parseInt(Integer.toString(i+1)+Integer.toString(z+1)));
+				int area = Sudoku.getAreaFromCase(i,z);
 				int[] areaValues = this.areaToArray(area);
 				for(int x : areaValues){
 					if(!forbiddenNumbs.contains(x))
@@ -125,7 +127,15 @@ public class Sudoku {
 		return (Integer.toString(this.grid[row-1][col-1]) != null) ? this.grid[row-1][col-1] : 0;
 
 	}
-	
+
+	public int getCaseAt(int myCase){
+
+		int row = Integer.parseInt(String.valueOf(Integer.toString(myCase).charAt(0))) -1;
+		int col = Integer.parseInt(String.valueOf(Integer.toString(myCase).charAt(1))) -1;
+		return (Integer.toString(this.grid[row][col]) != null) ? this.grid[row][col] : 0;
+
+	}
+
 	static String rowToString(int[] col){
 		
 		String res = "";
@@ -138,36 +148,23 @@ public class Sudoku {
 		
 	}
 	
-	public int[] areaToArray(int area){
-		
-		int[] res = new int[9];
-		int minRow = 0;
-		int minCol = 0;
+	public static int[] areaToArray(int area){
+
+		int cases[] = null; 
 		
 		switch(area){
-			case 1: minRow = 0; minCol = 0; break;
-			case 2: minRow = 0; minCol = 3; break;
-			case 3: minRow = 0; minCol = 6; break;
-			case 4: minRow = 3; minCol = 0; break;
-			case 5: minRow = 3; minCol = 3; break;
-			case 6: minRow = 3; minCol = 6; break;
-			case 7: minRow = 6; minCol = 0; break;
-			case 8: minRow = 6; minCol = 3; break;
-			case 9: minRow = 6; minCol = 6; break;
+			case 1: cases = new int[]{11, 12, 13, 21, 22, 23, 31, 32, 33}; break;
+			case 2: cases = new int[]{14, 15, 16, 24, 25, 26, 34, 35, 36}; break;
+			case 3: cases = new int[]{17, 18, 19, 27, 28, 29, 37, 38, 39}; break;
+			case 4: cases = new int[]{41, 42, 43, 51, 52, 53, 61, 62, 63}; break;
+			case 5: cases = new int[]{44, 45, 46, 54, 55, 56, 64, 65, 66}; break;
+			case 6: cases = new int[]{47, 48, 49, 57, 58, 59, 67, 68, 69}; break;
+			case 7: cases = new int[]{71, 72, 73, 81, 82, 83, 91, 92, 93}; break;
+			case 8: cases = new int[]{74, 75, 76, 84, 85, 86, 94, 95, 96}; break;
+			case 9: cases = new int[]{77, 78, 79, 87, 88, 89, 97, 98, 99}; break;
 		}
 		
-		int x = 0;
-		
-		for (int i = minRow; i < minRow + 3; i++){
-			for (int j = minCol; j < minCol +3; j++){
-				if(this.grid[i][j] != 0){
-					res[x] = this.grid[i][j];
-					x++;
-				}
-			}
-		}
-		
-		return res;
+		return cases;
 	}
 	
 	public boolean areaIsOk(int area){
@@ -187,16 +184,11 @@ public class Sudoku {
 		return res;
 	}
 	
-	public static int getAreaFromCase(int lacase){
+	public static int getAreaFromCase(int row, int col){
 		
 		int res = 0;
 		ArrayList<Integer> allAreas = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9));
 		ArrayList<Integer> possibleAreas = allAreas;
-		
-		String sCase = Integer.toString(lacase);
-		//Log.e(null, sCase);
-		int row = Integer.parseInt(String.valueOf(sCase.charAt(0))) -1;
-		int col = Integer.parseInt(String.valueOf(sCase.charAt(1))) -1;
 		
 		if(row < 3)
 			possibleAreas.retainAll(new ArrayList<Integer>(Arrays.asList(1,2,3)));
@@ -279,7 +271,7 @@ public class Sudoku {
 			
 			int digit = this.grid[row][col];
 			int digitR = this.grid[8-row][8-col];
-			int area = Sudoku.getAreaFromCase(caseI);
+			int area = Sudoku.getAreaFromCase(row, col);
 			
 			//Log.e(null, Integer.toString(area) + " : " + Integer.toString(this.countDigitInArea(area)));
 			
@@ -370,23 +362,16 @@ public class Sudoku {
 		return count;
 	}
 
-	public boolean solve(){
+	public void solve(){
 		
-		boolean solved = false;
-		
-		this.gridFull = this.gridUser;
-		
-		return solved;
+		SudokuSolver solver = new SudokuSolver(this);
+		solver.run();
 		
 	}
 	
-	private boolean checkCandidates(int row, int col) {
+	public void del(int row, int col) {
 		
-		boolean check = false;
-		
-		
-		
-		return check;
+		this.gridUser[row][col] = 0;
 		
 	}
 

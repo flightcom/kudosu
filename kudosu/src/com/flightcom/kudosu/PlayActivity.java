@@ -104,7 +104,7 @@ public class PlayActivity extends Activity {
 						
 						String draw = "";
 						
-						int area = Sudoku.getAreaFromCase(Sudoku.caseCoordToInt(Integer.parseInt(posX)-1, Integer.parseInt(posY)-1));
+						int area = Sudoku.getAreaFromCase(Integer.parseInt(posX)-1, Integer.parseInt(posY)-1);
 						if(area %2 == 0)
 							draw += "gray_";
 						

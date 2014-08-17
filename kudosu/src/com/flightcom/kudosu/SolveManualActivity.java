@@ -9,10 +9,14 @@ import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnKeyListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
@@ -25,7 +29,28 @@ public class SolveManualActivity extends Activity {
 	EditText selectedCase = null;
 	Chronometer chrono;
 	Sudoku sudoku;
+	SudokuSolver solver;
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.solve, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case R.id.solve_action_clear: 
+	        	this.sudoku.grid = this.sudoku.gridUser;
+	        	print();
+	        	return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
+
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +60,7 @@ public class SolveManualActivity extends Activity {
 		LinearLayout root = (LinearLayout) findViewById(R.id.root);
 
 		Bundle bundle = getIntent().getExtras();
+		sudoku = new Sudoku();
 		chrono = (Chronometer) findViewById(R.id.chrono);
 
 		Button bt1 = (Button) findViewById(R.id.button1);
@@ -64,7 +90,7 @@ public class SolveManualActivity extends Activity {
 		bt9.setOnClickListener(clickNumberListener);
 		
 		btDel.setOnClickListener(clickDelListener);
-		btVal.setOnClickListener(validateListener);
+		btVal.setOnClickListener(solveListener);
 
 		// On r�cup�re les dimensions de l'�cran
 		DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -101,7 +127,7 @@ public class SolveManualActivity extends Activity {
 						
 						String draw = "";
 						
-						int area = Sudoku.getAreaFromCase(Sudoku.caseCoordToInt(Integer.parseInt(posX)-1, Integer.parseInt(posY)-1));
+						int area = Sudoku.getAreaFromCase(Integer.parseInt(posX)-1, Integer.parseInt(posY)-1);
 						if(area %2 == 0)
 							draw += "gray_";
 						
@@ -135,6 +161,24 @@ public class SolveManualActivity extends Activity {
 							}
 						});
 
+//						caseFinale.setOnTouchListener(new OnTouchListener(){
+//							
+//							public boolean onTouch(View v, MotionEvent event) {
+//
+//								if (event.getAction() == MotionEvent.ACTION_HOVER_MOVE ) {
+//									v.setBackgroundColor(Color.GREEN);
+//									selectedCase = (EditText) v;
+//									return true;
+//								} else {
+//									v.setBackground(coin);
+//								}
+//								
+//								return false;
+//								
+//							}
+//
+//						});
+
 						caseFinale.setInputType(InputType.TYPE_NULL);
 						caseFinale.setBackground(coin);
 						caseFinale.setWidth((int)width/9);
@@ -156,7 +200,7 @@ public class SolveManualActivity extends Activity {
 
 		for(int i = 0; i < buttons.length; i++) {
 			LayoutParams childParams = (LayoutParams)buttons[i].getLayoutParams();
-			childParams.height = (height - gridHeight)/7;
+			childParams.height = (height - gridHeight)/11;
 		}
 		
 	}
@@ -172,12 +216,12 @@ public class SolveManualActivity extends Activity {
 		
 		super.onResume();
 		View decorView = getWindow().getDecorView();
-		decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+//		decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 		
 	}
 
@@ -188,6 +232,7 @@ public class SolveManualActivity extends Activity {
 			// TODO Auto-generated method stub
 			Button bt = (Button) v;
 			String value = bt.getText().toString();
+			selectedCase.setTextColor(Color.BLACK);
 			selectedCase.setText(value);
 			int[] coord = Sudoku.caseIntToCoor(selectedCase.getId());
 			sudoku.gridUser[coord[0]][coord[1]] = Integer.parseInt(value);
@@ -202,6 +247,9 @@ public class SolveManualActivity extends Activity {
 			// TODO Auto-generated method stub
 			//Button bt = (Button) v;
 			selectedCase.setText("");
+			int id = selectedCase.getId();
+			int[] coords = Sudoku.caseIntToCoor(id);
+			sudoku.del(coords[0], coords[1]);
 		}
 	};
 	
@@ -214,11 +262,38 @@ public class SolveManualActivity extends Activity {
 		}
 	};
 	
-	private OnClickListener validateListener = new View.OnClickListener() {
+	private OnClickListener solveListener = new View.OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
+			
+			sudoku.solve();
+			print();
+			
 		}
+
 	};
 
+	private void print() {
+
+		for( int i = 0; i < sudoku.grid.length; i++) {
+			
+			for ( int j = 0; j < sudoku.grid[i].length; j++) {
+				
+				String caseId = Integer.toString(Sudoku.caseCoordToInt(i, j));
+				int resID = getResources().getIdentifier(caseId, "id", getPackageName());
+				EditText mCase = (EditText)findViewById(resID);
+				
+				int color = (sudoku.grid[i][j] == sudoku.gridUser[i][j]) ? Color.BLACK : Color.BLUE;
+				
+				mCase.setTextColor(color);
+				String val = sudoku.grid[i][j] == 0 ? "" : Integer.toString(sudoku.grid[i][j]);
+				mCase.setText(val);
+
+			}
+			
+		}
+		
+	}	
+	
 }
