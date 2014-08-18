@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 
 import android.util.Log;
@@ -133,6 +134,17 @@ public class SudokuSolver {
 		}
 		
 		// Check the row
+		for ( int i = 0; i < this.sudoku.grid.length; i++ ) {
+			
+			for ( int numero : this.numbersList ) {
+				
+				ArrayList<Integer> casesContainingNum = new ArrayList<Integer>(); 
+
+				HashSet<Integer> row = new HashSet<Integer>(Arrays.asList(this.sudoku.grid[i]));
+
+			}
+			
+		}
 		
 		// Check the column
 		
