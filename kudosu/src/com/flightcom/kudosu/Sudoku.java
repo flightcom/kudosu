@@ -12,15 +12,18 @@ public class Sudoku {
 	
 	ArrayList<Integer> numbersList = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9));
 	// Grille de départ
-	int[][] grid = new int[9][9];
+	Integer[][] grid = new Integer[9][9];
 	// Grille remplie
-	int[][] gridFull = new int[9][9];
+	Integer[][] gridFull = new Integer[9][9];
 	// Grille de départ avec remplissage du joueur
-	int[][] gridUser = new int[9][9];
+	Integer[][] gridUser = new Integer[9][9];
 	
 	boolean gridReady = false;
 
-	public Sudoku(){}
+	public Sudoku(){
+		
+		
+	}
 	
 	public Sudoku(int level){
 		
@@ -132,7 +135,7 @@ public class Sudoku {
 
 		int row = Integer.parseInt(String.valueOf(Integer.toString(myCase).charAt(0))) -1;
 		int col = Integer.parseInt(String.valueOf(Integer.toString(myCase).charAt(1))) -1;
-		return (Integer.toString(this.grid[row][col]) != null) ? this.grid[row][col] : 0;
+		return (this.grid[row][col] != null) ? this.grid[row][col] : 0;
 
 	}
 

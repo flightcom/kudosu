@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import android.util.Log;
 import android.widget.EditText;
@@ -25,7 +26,7 @@ public class SudokuSolver {
 	public SudokuSolver(Sudoku sudoku){
 		
 		this.sudoku = sudoku;
-		this.sudoku.grid = this.sudoku.gridUser.clone();
+		this.sudoku.grid = this.sudoku.gridUser;
 
 	}
 	
@@ -45,11 +46,11 @@ public class SudokuSolver {
 
 			for ( int j = 0; j < this.sudoku.grid[i].length; j++) {
 				
-				int cell = this.sudoku.grid[i][j];
+				Integer cell = this.sudoku.grid[i][j];
 				HashSet<Integer> candidates = (HashSet<Integer>) numbersList.clone();
 				HashSet<Integer> notCandidates = new HashSet<Integer>();
 				
-				if( cell == 0 ) {
+				if( cell != null ) {
 					
 					ArrayList<Integer> colNums =  new ArrayList<Integer>();
 					ArrayList<Integer> rowNums =  new ArrayList<Integer>();
@@ -122,11 +123,8 @@ public class SudokuSolver {
 				}
 				
 				if ( casesContainingNum.size() == 1 ) {
-					
 					int coords[] = Sudoku.caseIntToCoor(casesContainingNum.get(0));
-					Log.i(null, "Unique position " + Integer.toString(coords[0])+','+Integer.toString(coords[1]) + " : " + this.candidates[coords[0]][coords[1]].toString() );
 					this.candidates[coords[0]][coords[1]] = new HashSet<Integer>(Arrays.asList(numero));
-					
 				}
 				
 			}
@@ -138,16 +136,71 @@ public class SudokuSolver {
 			
 			for ( int numero : this.numbersList ) {
 				
-				ArrayList<Integer> casesContainingNum = new ArrayList<Integer>(); 
+				ArrayList<Integer[]> casesContainingNum = new ArrayList<Integer[]>(); 
+				Integer[] row = this.sudoku.grid[i];
+				
+				for ( int j = 0; j < row.length; j++ ) {
+					
+					if ( this.candidates[i][j].contains(numero) ) {
+						casesContainingNum.add(new Integer[]{i, j});
+					}
 
-				HashSet<Integer> row = new HashSet<Integer>(Arrays.asList(this.sudoku.grid[i]));
+				}
 
+				if ( casesContainingNum.size() == 1 ) {
+					Integer[] tuplet = casesContainingNum.get(0);
+					this.candidates[tuplet[0]][tuplet[1]] = new HashSet<Integer>(Arrays.asList(numero));
+				}
 			}
 			
 		}
 		
 		// Check the column
+		for ( int j = 0; j < this.sudoku.grid[0].length; j++ ) {
+
+			for ( int numero : this.numbersList ) {
+				
+				ArrayList<Integer[]> casesContainingNum = new ArrayList<Integer[]>(); 
+				Integer[] column = new Integer[9];
+				
+				for ( int i = 0; i < this.sudoku.grid.length; i++ ) {
+					
+					column[i] = (this.sudoku.grid[i][j]);
+					
+				}
+
+				for ( int i = 0; i < column.length; i++ ) {
+					
+					if ( this.candidates[i][j].contains(numero) ) {
+						casesContainingNum.add(new Integer[]{i, j});
+					}
+
+				}
+
+				if ( casesContainingNum.size() == 1 ) {
+					Integer[] tuplet = casesContainingNum.get(0);
+					this.candidates[tuplet[0]][tuplet[1]] = new HashSet<Integer>(Arrays.asList(numero));
+				}
+				
+			}
+			
+		}
 		
+		for( int i = 0; i < this.sudoku.grid.length; i++) {
+
+			for ( int j = 0; j < this.sudoku.grid[i].length; j++) {
+				
+				if(this.candidates[i][j].size() == 1) {
+					
+					nbCellsFound++;
+					Log.i(null, "Candidats " + Integer.toString(i)+','+Integer.toString(j) + " : " + this.candidates[i][j].toString() );
+					this.sudoku.grid[i][j] = Integer.parseInt(this.candidates[i][j].toString().replace("[", "").replace("]", ""));
+					
+				}
+
+			}
+			
+		}
 		return nbCellsFound;
 		
 	}

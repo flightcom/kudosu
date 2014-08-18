@@ -287,7 +287,7 @@ public class SolveManualActivity extends Activity {
 				int color = (sudoku.grid[i][j] == sudoku.gridUser[i][j]) ? Color.BLACK : Color.BLUE;
 				
 				mCase.setTextColor(color);
-				String val = sudoku.grid[i][j] == 0 ? "" : Integer.toString(sudoku.grid[i][j]);
+				String val = sudoku.grid[i][j].intValue() == 0 ? "" : Integer.toString(sudoku.grid[i][j]);
 				mCase.setText(val);
 
 			}
