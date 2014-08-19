@@ -356,7 +356,7 @@ public class Sudoku {
 	public int countDigitInArea(int area){
 		
 		int count = 0;
-		int [] digitInArea = this.areaToArray(area);
+		int [] digitInArea = Sudoku.areaToArray(area);
 		for(int x : digitInArea){
 			if( x != 0)
 				count++;
@@ -374,7 +374,7 @@ public class Sudoku {
 	
 	public void del(int row, int col) {
 		
-		this.gridUser[row][col] = 0;
+		this.gridUser[row][col] = null;
 		
 	}
 

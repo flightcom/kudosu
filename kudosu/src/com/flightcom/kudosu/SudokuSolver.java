@@ -15,18 +15,15 @@ import android.widget.EditText;
 public class SudokuSolver {
 
 	Sudoku sudoku;
-	HashSet<Integer> numbersList = new HashSet<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9));
+	ArrayList<Integer> numbersList = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9));
 	
 	@SuppressWarnings("unchecked")
-	HashSet<Integer>[][] candidates = new HashSet[9][9];
-	
-	//ArrayList<ArrayList<ArrayList<Integer>>> candidates = new ArrayList<ArrayList<ArrayList<Integer>>>();
-	
+	ArrayList<Integer>[][] candidates = new ArrayList[9][9];
 	
 	public SudokuSolver(Sudoku sudoku){
 		
 		this.sudoku = sudoku;
-		this.sudoku.grid = this.sudoku.gridUser;
+		this.sudoku.grid = this.sudoku.gridUser.clone();
 
 	}
 	
@@ -47,23 +44,26 @@ public class SudokuSolver {
 			for ( int j = 0; j < this.sudoku.grid[i].length; j++) {
 				
 				Integer cell = this.sudoku.grid[i][j];
-				HashSet<Integer> candidates = (HashSet<Integer>) numbersList.clone();
-				HashSet<Integer> notCandidates = new HashSet<Integer>();
+				ArrayList<Integer> candidates = (ArrayList<Integer>) numbersList.clone();
+				ArrayList<Integer> notCandidates = new ArrayList<Integer>();
 				
-				if( cell != null ) {
+				if( cell == null ) {
 					
 					ArrayList<Integer> colNums =  new ArrayList<Integer>();
 					ArrayList<Integer> rowNums =  new ArrayList<Integer>();
 					ArrayList<Integer> areaNums =  new ArrayList<Integer>();
 					
+					// Check the column
 					for(int ik = 0; ik < this.sudoku.grid.length; ik++) {
 						colNums.add(this.sudoku.grid[ik][j]);
 					}
 
+					// Check the row
 					for(int jl = 0; jl < this.sudoku.grid[i].length; jl++) {
 						rowNums.add(this.sudoku.grid[i][jl]);
 					}
 
+					// Check the area
 					int area = Sudoku.getAreaFromCase(i, j);
 					int[] areaVals = Sudoku.areaToArray(area);
 					for ( int x : areaVals) {
@@ -79,7 +79,7 @@ public class SudokuSolver {
 
 				} else {
 					
-					this.candidates[i][j] = new HashSet<Integer>(Arrays.asList(this.sudoku.grid[i][j]));
+					this.candidates[i][j] = new ArrayList<Integer>(Arrays.asList(this.sudoku.grid[i][j]));
 
 				}
 
@@ -88,7 +88,7 @@ public class SudokuSolver {
 					
 					nbCellsFound++;
 					Log.i(null, "Candidats " + Integer.toString(i)+','+Integer.toString(j) + " : " + this.candidates[i][j].toString() );
-					this.sudoku.grid[i][j] = Integer.parseInt(this.candidates[i][j].toString().replace("[", "").replace("]", ""));
+					this.sudoku.grid[i][j] = this.candidates[i][j].get(0);
 					
 				}
 
@@ -124,7 +124,7 @@ public class SudokuSolver {
 				
 				if ( casesContainingNum.size() == 1 ) {
 					int coords[] = Sudoku.caseIntToCoor(casesContainingNum.get(0));
-					this.candidates[coords[0]][coords[1]] = new HashSet<Integer>(Arrays.asList(numero));
+					this.candidates[coords[0]][coords[1]] = new ArrayList<Integer>(Arrays.asList(numero));
 				}
 				
 			}
@@ -149,7 +149,7 @@ public class SudokuSolver {
 
 				if ( casesContainingNum.size() == 1 ) {
 					Integer[] tuplet = casesContainingNum.get(0);
-					this.candidates[tuplet[0]][tuplet[1]] = new HashSet<Integer>(Arrays.asList(numero));
+					this.candidates[tuplet[0]][tuplet[1]] = new ArrayList<Integer>(Arrays.asList(numero));
 				}
 			}
 			
@@ -179,7 +179,7 @@ public class SudokuSolver {
 
 				if ( casesContainingNum.size() == 1 ) {
 					Integer[] tuplet = casesContainingNum.get(0);
-					this.candidates[tuplet[0]][tuplet[1]] = new HashSet<Integer>(Arrays.asList(numero));
+					this.candidates[tuplet[0]][tuplet[1]] = new ArrayList<Integer>(Arrays.asList(numero));
 				}
 				
 			}
@@ -193,8 +193,8 @@ public class SudokuSolver {
 				if(this.candidates[i][j].size() == 1) {
 					
 					nbCellsFound++;
-					Log.i(null, "Candidats " + Integer.toString(i)+','+Integer.toString(j) + " : " + this.candidates[i][j].toString() );
-					this.sudoku.grid[i][j] = Integer.parseInt(this.candidates[i][j].toString().replace("[", "").replace("]", ""));
+					Log.i(null, "Unique " + Integer.toString(i)+","+Integer.toString(j) + " : " + this.candidates[i][j].toString() );
+					this.sudoku.grid[i][j] = this.candidates[i][j].get(0);
 					
 				}
 

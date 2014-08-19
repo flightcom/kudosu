@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -284,10 +285,10 @@ public class SolveManualActivity extends Activity {
 				int resID = getResources().getIdentifier(caseId, "id", getPackageName());
 				EditText mCase = (EditText)findViewById(resID);
 				
-				int color = (sudoku.grid[i][j] == sudoku.gridUser[i][j]) ? Color.BLACK : Color.BLUE;
+				int color = (mCase.length() > 0) ? Color.BLACK : Color.BLUE;
 				
 				mCase.setTextColor(color);
-				String val = sudoku.grid[i][j].intValue() == 0 ? "" : Integer.toString(sudoku.grid[i][j]);
+				String val = (sudoku.grid[i][j] == null ) ? "" : Integer.toString(sudoku.grid[i][j]);
 				mCase.setText(val);
 
 			}
