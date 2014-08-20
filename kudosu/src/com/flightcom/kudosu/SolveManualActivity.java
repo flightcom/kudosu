@@ -217,12 +217,12 @@ public class SolveManualActivity extends Activity {
 		
 		super.onResume();
 		View decorView = getWindow().getDecorView();
-//		decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-//                | View.SYSTEM_UI_FLAG_FULLSCREEN
-//                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+		decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 		
 	}
 
@@ -287,8 +287,13 @@ public class SolveManualActivity extends Activity {
 				
 				int color = (mCase.length() > 0) ? Color.BLACK : Color.BLUE;
 				
+				//for (int nb : )
+				
 				mCase.setTextColor(color);
+				// String val = (sudoku.grid[i][j] == null ) ? sudoku.solver.candidates[i][j].toString() : Integer.toString(sudoku.grid[i][j]);
 				String val = (sudoku.grid[i][j] == null ) ? "" : Integer.toString(sudoku.grid[i][j]);
+				// float size = (sudoku.grid[i][j] == null ) ? 10 : 28;
+				// mCase.setTextSize(size);
 				mCase.setText(val);
 
 			}

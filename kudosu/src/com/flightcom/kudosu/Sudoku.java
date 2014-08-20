@@ -18,6 +18,8 @@ public class Sudoku {
 	// Grille de départ avec remplissage du joueur
 	Integer[][] gridUser = new Integer[9][9];
 	
+	SudokuSolver solver;
+	
 	boolean gridReady = false;
 
 	public Sudoku(){
@@ -367,7 +369,7 @@ public class Sudoku {
 
 	public void solve(){
 		
-		SudokuSolver solver = new SudokuSolver(this);
+		this.solver = new SudokuSolver(this);
 		solver.run();
 		
 	}
