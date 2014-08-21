@@ -379,5 +379,18 @@ public class Sudoku {
 		this.gridUser[row][col] = null;
 		
 	}
+	
+	public static ArrayList<Integer> getAdjacentAreas(int area) {
+		
+		ArrayList<Integer> adj = new ArrayList<Integer>();
+		
+		adj.add((area+3)%9);
+		adj.add((area+6)%9);
+		
+		// 8 (7 et 9) :: 9 : (8+1) % (m3s+1) = 9, 7 : ((8+2) % m3s) + m3i
+		// 3 (1 et 2) :: 2 : ((3+2) % 3 ) + 0 = 2, 1 : (3+1) % (3+1) = 0
+		
+		return adj;
+	}
 
 }

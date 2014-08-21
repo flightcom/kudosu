@@ -31,6 +31,7 @@ public class SudokuSolver {
 		
 		int nb1 = this.checkCandidates();
 		int nb2 = this.checkUniquePlace();
+		int nb3 = this.checkImpossibleCandidates();
 
 	}
 
@@ -204,5 +205,18 @@ public class SudokuSolver {
 		return nbCellsFound;
 		
 	}
-	
+
+	private int checkImpossibleCandidates() {
+		
+		int nbCellsFound = 0;
+		
+		for ( int area : this.numbersList ) {
+			
+			int[] cases = Sudoku.areaToArray(area);
+			
+		}
+		
+		return nbCellsFound;
+		
+	}
 }
