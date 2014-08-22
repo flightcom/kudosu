@@ -370,7 +370,7 @@ public class Sudoku {
 	public void solve(){
 		
 		this.solver = new SudokuSolver(this);
-		solver.run();
+		ArrayList<Integer> process = solver.run();
 		
 	}
 	
@@ -380,21 +380,27 @@ public class Sudoku {
 		
 	}
 	
-	public static ArrayList<Integer> getAdjacentAreas(int area) {
+	public static ArrayList<Integer> getAdjacentAreasHor(int area) {
+		
+		ArrayList<Integer> adj = new ArrayList<Integer>();
+		
+		int m3i = area - (area % 3);
+		for(int i = 1; i < 3; i++) {
+			if( i + m3i != area ) {
+				adj.add(i + m3i);
+			}
+		}
+
+		return adj;
+	}
+
+	public static ArrayList<Integer> getAdjacentAreasVert(int area) {
 		
 		ArrayList<Integer> adj = new ArrayList<Integer>();
 		
 		adj.add((area + 3) % 9);
 		adj.add((area + 6) % 9);
-		
-		int m3i = area - (area % 3);
-		for(int i = 1; i < 3; i++) {
-			if( area + i != area % 3 ) {
-				adj.add(i + m3i);
-			}
-		}
-		
+
 		return adj;
 	}
-
 }

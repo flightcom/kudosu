@@ -2,15 +2,10 @@ package com.flightcom.kudosu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import android.util.Log;
-import android.widget.EditText;
 
 public class SudokuSolver {
 
@@ -27,12 +22,17 @@ public class SudokuSolver {
 
 	}
 	
-	public void run() {
+	public ArrayList<Integer> run() {
+	
+		ArrayList<Integer> process = new ArrayList<Integer>();
 		
-		int nb1 = this.checkCandidates();
-		int nb2 = this.checkUniquePlace();
-		int nb3 = this.checkImpossibleCandidates();
+		int nb1, nb2, nb3 = 0;
+		
+		do { nb1 = this.checkCandidates(); process.add(1); } while (nb1 > 0);
+		do { nb2 = this.checkUniquePlace(); process.add(2); } while (nb2 > 0);
+		do { nb3 = this.checkImpossibleCandidates(); process.add(2); } while (nb2 > 0);
 
+		return process;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -212,7 +212,68 @@ public class SudokuSolver {
 		
 		for ( int area : this.numbersList ) {
 			
-			int[] cases = Sudoku.areaToArray(area);
+			ArrayList<Integer> adjs = new ArrayList<Integer>();
+			adjs.addAll(Sudoku.getAdjacentAreasVert(area));
+			adjs.addAll(Sudoku.getAdjacentAreasHor(area));
+			
+			int z = 0;
+			for(int adj : adjs) {
+				
+				int [] cases = Sudoku.areaToArray(adj);
+				char orientation = z < 2 ? 'c' : 'r';
+				
+				for ( int numero : this.numbersList ) {
+					
+					Set<Integer> stack = new HashSet<Integer>();
+					for ( int mCase : cases ) {
+						
+						int[] coords = Sudoku.caseIntToCoor(mCase);
+
+						if(this.sudoku.solver.candidates[coords[0]][coords[1]].size() > 1 && this.sudoku.solver.candidates[coords[0]][coords[1]].contains(numero)) {
+
+							int [] cells = Sudoku.areaToArray(area);
+
+							switch ( orientation ) {
+								case 'c' : 
+									for ( int cell : cells ) {
+										int[] co = Sudoku.caseIntToCoor(cell);
+										if ( co[1] == Integer.parseInt(stack.toArray()[0].toString()) ) {
+											this.sudoku.solver.candidates[co[0]][co[1]].remove(numero);
+										}
+									}
+									break;
+								case 'r' : // On compare les numeros de lignes
+									for ( int cell : cells ) {
+										int[] co = Sudoku.caseIntToCoor(cell);
+										if ( co[1] == Integer.parseInt(stack.toArray()[0].toString()) ) {
+											this.sudoku.solver.candidates[co[0]][co[1]].remove(numero);
+										}
+									}
+									break;
+							}
+						
+						}
+						
+						if ( stack.size() == 1) { // une seule ligne ou colonne
+							// On supprime le numero en tant que candidats dans toute la ligne ou colonne
+							switch ( orientation ) {
+								case 'c' : // On compare les numeros de colonnes
+									stack.add(coords[1]);
+									break;
+								case 'r' : // On compare les numeros de lignes
+									stack.add(coords[0]);
+									break;
+							}
+						}
+						
+						
+						
+					}
+					
+				}
+				
+				z++;
+			}
 			
 		}
 		
