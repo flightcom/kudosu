@@ -47,6 +47,10 @@ public class SolveManualActivity extends Activity {
 	        	this.sudoku.grid = this.sudoku.gridUser;
 	        	print();
 	        	return true;
+	        case R.id.solve_action_fill: 
+	        	this.sudoku.fill();
+	        	print();
+	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
@@ -213,18 +217,18 @@ public class SolveManualActivity extends Activity {
 		
 	}
 
-	protected void onResume() {
-		
-		super.onResume();
-		View decorView = getWindow().getDecorView();
-		decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-		
-	}
+//	protected void onResume() {
+//		
+//		super.onResume();
+//		View decorView = getWindow().getDecorView();
+//		decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+//		
+//	}
 
 	private OnClickListener clickNumberListener = new View.OnClickListener() {
 

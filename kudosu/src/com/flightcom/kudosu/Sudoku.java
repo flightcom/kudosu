@@ -398,9 +398,48 @@ public class Sudoku {
 		
 		ArrayList<Integer> adj = new ArrayList<Integer>();
 		
-		adj.add((area + 3) % 9);
-		adj.add((area + 6) % 9);
+		adj.add((area + 3) % 10 + 1);
+		adj.add((area + 6) % 10 + 1);
 
 		return adj;
+	}
+	
+	public void setCell(int row, int col, int numero) {
+		
+		this.grid[row][col] = numero;
+		
+	}
+	
+	public void fill() {
+		
+		this.setCell(0, 0, 5);
+		this.setCell(1, 1, 1);
+		this.setCell(1, 2, 7);
+		this.setCell(1, 3, 5);
+		this.setCell(1, 4, 3);
+		this.setCell(1, 8, 2);
+		this.setCell(2, 4, 2);
+		this.setCell(2, 5, 7);
+		this.setCell(2, 7, 5);
+		this.setCell(2, 8, 6);
+		this.setCell(3, 4, 1);
+		this.setCell(3, 5, 3);
+		this.setCell(3, 6, 4);
+		this.setCell(4, 1, 5);
+		this.setCell(4, 7, 9);
+		this.setCell(5, 2, 8);
+		this.setCell(5, 3, 6);
+		this.setCell(5, 4, 5);
+		this.setCell(6, 0, 9);
+		this.setCell(6, 1, 4);
+		this.setCell(6, 3, 2);
+		this.setCell(6, 4, 7);
+		this.setCell(7, 0, 7);
+		this.setCell(7, 4, 8);
+		this.setCell(7, 5, 5);
+		this.setCell(7, 6, 1);
+		this.setCell(7, 7, 2);
+		this.setCell(8, 8, 7);
+		
 	}
 }

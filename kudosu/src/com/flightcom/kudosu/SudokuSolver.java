@@ -28,9 +28,9 @@ public class SudokuSolver {
 		
 		int nb1, nb2, nb3 = 0;
 		
-		do { nb1 = this.checkCandidates(); process.add(1); } while (nb1 > 0);
-		do { nb2 = this.checkUniquePlace(); process.add(2); } while (nb2 > 0);
-		do { nb3 = this.checkImpossibleCandidates(); process.add(2); } while (nb2 > 0);
+		do { nb1 = this.checkCandidates(); Log.i(null, "nb1 =  " + nb1); process.add(1); } while (nb1 > 0);
+		do { nb2 = this.checkUniquePlace(); Log.i(null, "nb2 =  " + nb2); process.add(2); } while (nb2 > 0);
+		do { nb3 = this.checkImpossibleCandidates(); Log.i(null, "nb3 =  " + nb3); process.add(3); } while (nb2 > 0);
 
 		return process;
 	}
@@ -85,11 +85,11 @@ public class SudokuSolver {
 				}
 
 				
-				if(this.candidates[i][j].size() == 1) {
-					
+				if(this.candidates[i][j].size() == 1 && this.sudoku.grid[i][j] == 0) {
+				
 					nbCellsFound++;
-					Log.i(null, "Candidats " + Integer.toString(i)+','+Integer.toString(j) + " : " + this.candidates[i][j].toString() );
 					this.sudoku.grid[i][j] = this.candidates[i][j].get(0);
+					// Log.i(null, "Candidats " + Integer.toString(i)+','+Integer.toString(j) + " : " + this.candidates[i][j].toString() );
 					
 				}
 
@@ -194,7 +194,7 @@ public class SudokuSolver {
 				if(this.candidates[i][j].size() == 1) {
 					
 					nbCellsFound++;
-					Log.i(null, "Unique " + Integer.toString(i)+","+Integer.toString(j) + " : " + this.candidates[i][j].toString() );
+					// Log.i(null, "Unique " + Integer.toString(i)+","+Integer.toString(j) + " : " + this.candidates[i][j].toString() );
 					this.sudoku.grid[i][j] = this.candidates[i][j].get(0);
 					
 				}
@@ -222,6 +222,7 @@ public class SudokuSolver {
 				int [] cases = Sudoku.areaToArray(adj);
 				char orientation = z < 2 ? 'c' : 'r';
 				
+				Log.i(null, "Area : " + area + ", Adj : " + adj);
 				for ( int numero : this.numbersList ) {
 					
 					Set<Integer> stack = new HashSet<Integer>();
@@ -231,42 +232,43 @@ public class SudokuSolver {
 
 						if(this.sudoku.solver.candidates[coords[0]][coords[1]].size() > 1 && this.sudoku.solver.candidates[coords[0]][coords[1]].contains(numero)) {
 
-							int [] cells = Sudoku.areaToArray(area);
-
+							// On ajoute le numero de ligne/colonne a la pile
 							switch ( orientation ) {
-								case 'c' : 
-									for ( int cell : cells ) {
-										int[] co = Sudoku.caseIntToCoor(cell);
-										if ( co[1] == Integer.parseInt(stack.toArray()[0].toString()) ) {
-											this.sudoku.solver.candidates[co[0]][co[1]].remove(numero);
-										}
-									}
+								case 'c' :
+									stack.add(coords[1]);
 									break;
-								case 'r' : // On compare les numeros de lignes
-									for ( int cell : cells ) {
-										int[] co = Sudoku.caseIntToCoor(cell);
-										if ( co[1] == Integer.parseInt(stack.toArray()[0].toString()) ) {
-											this.sudoku.solver.candidates[co[0]][co[1]].remove(numero);
-										}
-									}
+								case 'r' :
+									stack.add(coords[0]);
 									break;
 							}
 						
 						}
 						
 						if ( stack.size() == 1) { // une seule ligne ou colonne
+
 							// On supprime le numero en tant que candidats dans toute la ligne ou colonne
+							int [] cells = Sudoku.areaToArray(area);
+
 							switch ( orientation ) {
 								case 'c' : // On compare les numeros de colonnes
-									stack.add(coords[1]);
+									for ( int cell : cells ) {
+										int[] co = Sudoku.caseIntToCoor(cell);
+										if ( co[1] == Integer.parseInt(stack.toArray()[0].toString()) ) {
+											this.sudoku.solver.candidates[co[0]][co[1]].remove((Integer)numero);
+											//this.sudoku.solver.candidates[co[0]][co[1]].remove(numero);
+										}
+									}
 									break;
 								case 'r' : // On compare les numeros de lignes
-									stack.add(coords[0]);
+									for ( int cell : cells ) {
+										int[] co = Sudoku.caseIntToCoor(cell);
+										if ( co[1] == Integer.parseInt(stack.toArray()[0].toString()) ) {
+											this.sudoku.solver.candidates[co[0]][co[1]].remove((Integer)numero);
+										}
+									}
 									break;
 							}
 						}
-						
-						
 						
 					}
 					

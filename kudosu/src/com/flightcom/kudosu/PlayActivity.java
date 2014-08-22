@@ -229,7 +229,7 @@ public class PlayActivity extends Activity {
 			String value = bt.getText().toString();
 			selectedCase.setText(value);
 			int[] coord = Sudoku.caseIntToCoor(selectedCase.getId());
-			sudoku.gridUser[coord[0]][coord[1]] = Integer.parseInt(value);
+			sudoku.setCell(coord[0], coord[1], Integer.parseInt(value));
 			
 		}
 	};
