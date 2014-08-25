@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="ad_unit_id">ca-app-pub-9383925365299685/4402723455</string>
     <string name="app_name">kudosu</string>
     <string name="action_settings">Settings</string>
     <string name="clear_grid">Clear grid</string>

@@ -31,7 +31,7 @@ import android.widget.LinearLayout.LayoutParams;
 public class SolveManualActivity extends Activity {
 	
 	EditText selectedCase = null;
-	Chronometer chrono;
+	MChronometer chrono;
 	Sudoku sudoku;
 	SudokuSolver solver;
 	AlertDialog levelDialog;
@@ -82,7 +82,7 @@ public class SolveManualActivity extends Activity {
 
 		Bundle bundle = getIntent().getExtras();
 		this.sudoku = new Sudoku();
-		this.chrono = (Chronometer) findViewById(R.id.chrono);
+		this.chrono = (MChronometer) findViewById(R.id.chrono);
 
 		Button bt1 = (Button) findViewById(R.id.button1);
 		Button bt2 = (Button) findViewById(R.id.button2);
@@ -288,7 +288,7 @@ public class SolveManualActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			
-			chrono.setBase(SystemClock.elapsedRealtime());
+			//chrono.setBase(SystemClock.elapsedRealtime());
 			chrono.start();
 			sudoku.solve();
 			chrono.stop();
@@ -313,10 +313,10 @@ public class SolveManualActivity extends Activity {
 				//for (int nb : )
 				
 				mCase.setTextColor(color);
-				// String val = (sudoku.grid[i][j] == null ) ? sudoku.solver.candidates[i][j].toString() : Integer.toString(sudoku.grid[i][j]);
-				String val = (sudoku.grid[i][j] == null ) ? "" : Integer.toString(sudoku.grid[i][j]);
-				//float size = (sudoku.grid[i][j] == null ) ? 10 : 28;
-				//mCase.setTextSize(size);
+				String val = (sudoku.grid[i][j] == null ) ? sudoku.solver.candidates[i][j].toString() : Integer.toString(sudoku.grid[i][j]);
+				//String val = (sudoku.grid[i][j] == null ) ? "" : Integer.toString(sudoku.grid[i][j]);
+				float size = (sudoku.grid[i][j] == null ) ? 10 : 28;
+				mCase.setTextSize(size);
 				mCase.setText(val);
 
 			}

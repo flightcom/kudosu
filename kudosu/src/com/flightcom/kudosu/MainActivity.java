@@ -24,10 +24,12 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-9383925365299685/4402723455");
+        String adUnitId = getResources().getString(R.string.ad_unit_id);
+        mInterstitialAd.setAdUnitId(adUnitId);
 		
         // Create an ad request.
         AdRequest adRequestBuilder = new AdRequest.Builder()
+        	.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)       // Emulator
         	.addTestDevice("D74CB3B9E5A0526682270F026BAC2564")
         	.build();
 

@@ -12,13 +12,13 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 import java.text.DecimalFormat;
 
-public class Chronometer extends TextView {
+public class MChronometer extends TextView {
     @SuppressWarnings("unused")
 	private static final String TAG = "Chronometer";
 
     public interface OnChronometerTickListener {
 
-        void onChronometerTick(Chronometer chronometer);
+        void onChronometerTick(MChronometer chronometer);
     }
 
     private long mBase;
@@ -31,15 +31,15 @@ public class Chronometer extends TextView {
 
     private long timeElapsed;
     
-    public Chronometer(Context context) {
+    public MChronometer(Context context) {
         this (context, null, 0);
     }
 
-    public Chronometer(Context context, AttributeSet attrs) {
+    public MChronometer(Context context, AttributeSet attrs) {
         this (context, attrs, 0);
     }
 
-    public Chronometer(Context context, AttributeSet attrs, int defStyle) {
+    public MChronometer(Context context, AttributeSet attrs, int defStyle) {
         super (context, attrs, defStyle);
 
         init();

@@ -29,13 +29,13 @@ public class Sudoku {
 	
 	public Sudoku(int level){
 		
-		this.init();
+		this.generate();
 		this.setDifficulty(level);
 
 	}
 
 	@SuppressWarnings("unchecked")
-	private void init(){
+	private void generate(){
 		
 		int maxAttempts = 3;
 		int attempts = 0;
@@ -103,6 +103,23 @@ public class Sudoku {
 
 	}
 
+	private void generate2() {
+		
+		Sudoku sudok = new Sudoku();
+		SudokuSolver solver = new SudokuSolver(sudok);
+		solver.run();
+		
+		for ( int i : this.numbersList) {
+			
+			for ( int j : this.numbersList) {
+				
+				ArrayList<Integer> candidats = solver.candidates[i][j];
+				
+			}
+		}
+		
+	}
+	
 	static int getRandom(int start, int end){
 
 		Random rand = new Random();
