@@ -2,9 +2,12 @@ package com.flightcom.kudosu;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -31,6 +34,7 @@ public class SolveManualActivity extends Activity {
 	Chronometer chrono;
 	Sudoku sudoku;
 	SudokuSolver solver;
+	AlertDialog levelDialog;
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -44,12 +48,24 @@ public class SolveManualActivity extends Activity {
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
 	        case R.id.solve_action_clear: 
-	        	this.sudoku.grid = this.sudoku.gridUser;
+	        	this.sudoku = new Sudoku();
 	        	print();
 	        	return true;
-	        case R.id.solve_action_fill: 
-	        	this.sudoku.fill();
-	        	print();
+	        case R.id.solve_action_fill:
+	        	this.sudoku = new Sudoku();
+	        	String[] items = getResources().getStringArray(R.array.difficulty_levels_array);
+	        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	        	String string = getResources().getString(R.string.level_selection);
+                builder.setTitle(string);
+                builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                	public void onClick(DialogInterface dialog, int item) {
+                        sudoku.fill(item);
+                        print();
+	                    levelDialog.dismiss();
+                    }
+                });
+                levelDialog = builder.create();
+                levelDialog.show();
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -65,8 +81,8 @@ public class SolveManualActivity extends Activity {
 		LinearLayout root = (LinearLayout) findViewById(R.id.root);
 
 		Bundle bundle = getIntent().getExtras();
-		sudoku = new Sudoku();
-		chrono = (Chronometer) findViewById(R.id.chrono);
+		this.sudoku = new Sudoku();
+		this.chrono = (Chronometer) findViewById(R.id.chrono);
 
 		Button bt1 = (Button) findViewById(R.id.button1);
 		Button bt2 = (Button) findViewById(R.id.button2);
@@ -272,7 +288,10 @@ public class SolveManualActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			
+			chrono.setBase(SystemClock.elapsedRealtime());
+			chrono.start();
 			sudoku.solve();
+			chrono.stop();
 			print();
 			
 		}
@@ -296,8 +315,8 @@ public class SolveManualActivity extends Activity {
 				mCase.setTextColor(color);
 				// String val = (sudoku.grid[i][j] == null ) ? sudoku.solver.candidates[i][j].toString() : Integer.toString(sudoku.grid[i][j]);
 				String val = (sudoku.grid[i][j] == null ) ? "" : Integer.toString(sudoku.grid[i][j]);
-				// float size = (sudoku.grid[i][j] == null ) ? 10 : 28;
-				// mCase.setTextSize(size);
+				//float size = (sudoku.grid[i][j] == null ) ? 10 : 28;
+				//mCase.setTextSize(size);
 				mCase.setText(val);
 
 			}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">kudosu</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="clear_grid">Vider la grille</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="main_image">Image</string>
+    <string name="play">Jouer</string>
+    <string name="solve">Résoudre</string>
+    <string name="title_activity_play">Jouer !</string>
+    <string name="title_activity_solve">Résoudre !</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="seven">7</string>
+    <string name="eight">8</string>
+    <string name="nine">9</string>
+    <string name="delete">del</string>
+    <string name="back">Retour</string>
+    <string name="fill">Remplir</string>
+    <string name="validate">Valider</string>
+    <string name="pause">Pause</string>
+    <string name="title_activity_level_selection">Sélectionnez le niveau de difficulté</string>
+    <string name="level_selection">Sélectionnez le niveau de difficulté</string>
+    <string name="level1">Facile</string>
+    <string name="level2">Normal</string>
+    <string name="level3">Difficile</string>
+    <string name="level4">Très difficile</string>
+    <string name="level5">Pas assez dur ?</string>
+    <string name="image_description">description</string>
+    <string name="text_button_picture">Shoot</string>
+    <string name="title_activity_solve_manual">Résolution de Sudoku</string>
+
+    <string-array name="difficulty_levels_array">
+        <item>Facile</item>
+        <item>Normal</item>
+        <item>Difficile</item>
+        <item>Très difficile</item>
+        <item>Expert</item>
+    </string-array>
+    
+</resources>

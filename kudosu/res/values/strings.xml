@@ -24,7 +24,8 @@
     <string name="fill">Fill</string>
     <string name="validate">Valider</string>
     <string name="pause">Pause</string>
-    <string name="title_activity_level_selection">Select a level</string>
+    <string name="title_activity_level_selection">Select the difficulty level</string>
+    <string name="level_selection">Select the difficulty level</string>
     <string name="level1">Easy</string>
     <string name="level2">Medium</string>
     <string name="level3">Hard</string>
@@ -34,4 +35,11 @@
     <string name="text_button_picture">Shoot</string>
     <string name="title_activity_solve_manual">SolveManualActivity</string>
 
+    <string-array name="difficulty_levels_array">
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+        <item>Very Hard</item>
+        <item>Expert</item>
+    </string-array>
 </resources>

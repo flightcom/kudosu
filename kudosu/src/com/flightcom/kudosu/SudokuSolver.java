@@ -22,24 +22,22 @@ public class SudokuSolver {
 
 	}
 	
-	public ArrayList<Integer> run() {
+	public int run() {
 	
-		ArrayList<Integer> process = new ArrayList<Integer>();
+		int process = 0;
 		
-		int nb1, nb2, nb3 = 0;
+		int nb1 = 0, nb2 = 0, nb3 = 0;
 		
-		do { nb1 = this.checkCandidates(); Log.i(null, "nb1 =  " + nb1); process.add(1); } while (nb1 > 0);
-		do { nb2 = this.checkUniquePlace(); Log.i(null, "nb2 =  " + nb2); process.add(2); } while (nb2 > 0);
-		do { nb3 = this.checkImpossibleCandidates(); Log.i(null, "nb3 =  " + nb3); process.add(3); } while (nb2 > 0);
-
+		do { this.checkCandidates(); nb1 = this.updateGrid(); Log.i(null, "nb1 =  " + nb1); process+= nb1; } while (nb1 > 0);
+		do { this.checkUniquePlace(); nb2 = this.updateGrid(); Log.i(null, "nb2 =  " + nb2); process+= nb2; } while (nb2 > 0);
+		do { this.checkImpossibleCandidates(); nb3 = this.updateGrid(); Log.i(null, "nb3 =  " + nb3); process+= nb3; } while (nb3 > 0);
+		
 		return process;
+
 	}
 
-	@SuppressWarnings("unchecked")
-	private int checkCandidates(){
+	private void checkCandidates(){
 		
-		int nbCellsFound = 0;
-
 		for( int i = 0; i < this.sudoku.grid.length; i++) {
 
 			for ( int j = 0; j < this.sudoku.grid[i].length; j++) {
@@ -84,26 +82,13 @@ public class SudokuSolver {
 
 				}
 
-				
-				if(this.candidates[i][j].size() == 1 && this.sudoku.grid[i][j] == 0) {
-				
-					nbCellsFound++;
-					this.sudoku.grid[i][j] = this.candidates[i][j].get(0);
-					// Log.i(null, "Candidats " + Integer.toString(i)+','+Integer.toString(j) + " : " + this.candidates[i][j].toString() );
-					
-				}
-
 			}
 			
 		}
 		
-		return nbCellsFound;
-		
 	}
 	
-	private int checkUniquePlace() {
-		
-		int nbCellsFound = 0;
+	private void checkUniquePlace() {
 		
 		// Check the area
 		for(int area : numbersList) {
@@ -187,34 +172,13 @@ public class SudokuSolver {
 			
 		}
 		
-		for( int i = 0; i < this.sudoku.grid.length; i++) {
-
-			for ( int j = 0; j < this.sudoku.grid[i].length; j++) {
-				
-				if(this.candidates[i][j].size() == 1) {
-					
-					nbCellsFound++;
-					// Log.i(null, "Unique " + Integer.toString(i)+","+Integer.toString(j) + " : " + this.candidates[i][j].toString() );
-					this.sudoku.grid[i][j] = this.candidates[i][j].get(0);
-					
-				}
-
-			}
-			
-		}
-		return nbCellsFound;
-		
 	}
 
-	private int checkImpossibleCandidates() {
-		
-		int nbCellsFound = 0;
+	private void checkImpossibleCandidates() {
 		
 		for ( int area : this.numbersList ) {
 			
-			ArrayList<Integer> adjs = new ArrayList<Integer>();
-			adjs.addAll(Sudoku.getAdjacentAreasVert(area));
-			adjs.addAll(Sudoku.getAdjacentAreasHor(area));
+			int[] adjs = Sudoku.getAdjacentAreas(area);
 			
 			int z = 0;
 			for(int adj : adjs) {
@@ -222,7 +186,7 @@ public class SudokuSolver {
 				int [] cases = Sudoku.areaToArray(adj);
 				char orientation = z < 2 ? 'c' : 'r';
 				
-				Log.i(null, "Area : " + area + ", Adj : " + adj);
+				// Log.i(null, "Area : " + area + ", Adj : " + adj);
 				for ( int numero : this.numbersList ) {
 					
 					Set<Integer> stack = new HashSet<Integer>();
@@ -230,7 +194,7 @@ public class SudokuSolver {
 						
 						int[] coords = Sudoku.caseIntToCoor(mCase);
 
-						if(this.sudoku.solver.candidates[coords[0]][coords[1]].size() > 1 && this.sudoku.solver.candidates[coords[0]][coords[1]].contains(numero)) {
+						if(this.candidates[coords[0]][coords[1]].size() > 1 && this.candidates[coords[0]][coords[1]].contains(numero)) {
 
 							// On ajoute le numero de ligne/colonne a la pile
 							switch ( orientation ) {
@@ -244,34 +208,33 @@ public class SudokuSolver {
 						
 						}
 						
-						if ( stack.size() == 1) { // une seule ligne ou colonne
-
-							// On supprime le numero en tant que candidats dans toute la ligne ou colonne
-							int [] cells = Sudoku.areaToArray(area);
-
-							switch ( orientation ) {
-								case 'c' : // On compare les numeros de colonnes
-									for ( int cell : cells ) {
-										int[] co = Sudoku.caseIntToCoor(cell);
-										if ( co[1] == Integer.parseInt(stack.toArray()[0].toString()) ) {
-											this.sudoku.solver.candidates[co[0]][co[1]].remove((Integer)numero);
-											//this.sudoku.solver.candidates[co[0]][co[1]].remove(numero);
-										}
-									}
-									break;
-								case 'r' : // On compare les numeros de lignes
-									for ( int cell : cells ) {
-										int[] co = Sudoku.caseIntToCoor(cell);
-										if ( co[1] == Integer.parseInt(stack.toArray()[0].toString()) ) {
-											this.sudoku.solver.candidates[co[0]][co[1]].remove((Integer)numero);
-										}
-									}
-									break;
-							}
-						}
-						
 					}
 					
+					if ( stack.size() == 1) { // une seule ligne ou colonne
+
+						// On supprime le numero en tant que candidats dans toute la ligne ou colonne
+						int [] cells = Sudoku.areaToArray(area);
+
+						switch ( orientation ) {
+							case 'c' : // On compare les numeros de colonnes
+								for ( int cell : cells ) {
+									int[] co = Sudoku.caseIntToCoor(cell);
+									if ( co[1] == Integer.parseInt(stack.toArray()[0].toString()) ) {
+										this.candidates[co[0]][co[1]].remove((Integer)numero);
+										//this.sudoku.solver.candidates[co[0]][co[1]].remove(numero);
+									}
+								}
+								break;
+							case 'r' : // On compare les numeros de lignes
+								for ( int cell : cells ) {
+									int[] co = Sudoku.caseIntToCoor(cell);
+									if ( co[1] == Integer.parseInt(stack.toArray()[0].toString()) ) {
+										this.candidates[co[0]][co[1]].remove((Integer)numero);
+									}
+								}
+								break;
+						}
+					}
 				}
 				
 				z++;
@@ -279,7 +242,28 @@ public class SudokuSolver {
 			
 		}
 		
-		return nbCellsFound;
+	}
+	
+	public int updateGrid() {
 		
+		int nbCellsFound = 0;
+		
+		for( int i = 0; i < this.sudoku.grid.length; i++) {
+
+			for ( int j = 0; j < this.sudoku.grid[i].length; j++) {
+
+				if(this.candidates[i][j].size() == 1 && this.sudoku.grid[i][j] == null) {
+			
+					nbCellsFound++;
+					this.sudoku.grid[i][j] = this.candidates[i][j].get(0);
+					// Log.i(null, "Candidats " + Integer.toString(i)+','+Integer.toString(j) + " : " + this.candidates[i][j].toString() );
+				
+				}
+			}
+
+		}
+			
+		return nbCellsFound;
+
 	}
 }

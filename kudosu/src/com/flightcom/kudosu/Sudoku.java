@@ -370,7 +370,10 @@ public class Sudoku {
 	public void solve(){
 		
 		this.solver = new SudokuSolver(this);
-		ArrayList<Integer> process = solver.run();
+		int process = -1;
+		do {
+			process = solver.run();
+		} while (process != 0);
 		
 	}
 	
@@ -380,26 +383,23 @@ public class Sudoku {
 		
 	}
 	
-	public static ArrayList<Integer> getAdjacentAreasHor(int area) {
+	public static int[] getAdjacentAreas(int area) {
 		
-		ArrayList<Integer> adj = new ArrayList<Integer>();
+		int[] adj = null;
 		
-		int m3i = area - (area % 3);
-		for(int i = 1; i < 3; i++) {
-			if( i + m3i != area ) {
-				adj.add(i + m3i);
-			}
+		switch ( area ) {
+		
+			case 1 : adj = new int[]{4,7,2,3}; break;
+			case 2 : adj = new int[]{5,8,1,3}; break;
+			case 3 : adj = new int[]{6,9,1,2}; break;
+			case 4 : adj = new int[]{1,7,5,6}; break;
+			case 5 : adj = new int[]{2,8,4,6}; break;
+			case 6 : adj = new int[]{3,9,4,5}; break;
+			case 7 : adj = new int[]{1,4,8,9}; break;
+			case 8 : adj = new int[]{2,5,7,9}; break;
+			case 9 : adj = new int[]{3,3,7,8}; break;
+		
 		}
-
-		return adj;
-	}
-
-	public static ArrayList<Integer> getAdjacentAreasVert(int area) {
-		
-		ArrayList<Integer> adj = new ArrayList<Integer>();
-		
-		adj.add((area + 3) % 10 + 1);
-		adj.add((area + 6) % 10 + 1);
 
 		return adj;
 	}
@@ -407,39 +407,84 @@ public class Sudoku {
 	public void setCell(int row, int col, int numero) {
 		
 		this.grid[row][col] = numero;
+		this.gridUser = this.grid;
 		
 	}
 	
-	public void fill() {
+	public void setArea(int area, int[] nums) {
 		
-		this.setCell(0, 0, 5);
-		this.setCell(1, 1, 1);
-		this.setCell(1, 2, 7);
-		this.setCell(1, 3, 5);
-		this.setCell(1, 4, 3);
-		this.setCell(1, 8, 2);
-		this.setCell(2, 4, 2);
-		this.setCell(2, 5, 7);
-		this.setCell(2, 7, 5);
-		this.setCell(2, 8, 6);
-		this.setCell(3, 4, 1);
-		this.setCell(3, 5, 3);
-		this.setCell(3, 6, 4);
-		this.setCell(4, 1, 5);
-		this.setCell(4, 7, 9);
-		this.setCell(5, 2, 8);
-		this.setCell(5, 3, 6);
-		this.setCell(5, 4, 5);
-		this.setCell(6, 0, 9);
-		this.setCell(6, 1, 4);
-		this.setCell(6, 3, 2);
-		this.setCell(6, 4, 7);
-		this.setCell(7, 0, 7);
-		this.setCell(7, 4, 8);
-		this.setCell(7, 5, 5);
-		this.setCell(7, 6, 1);
-		this.setCell(7, 7, 2);
-		this.setCell(8, 8, 7);
+		int[] cells = Sudoku.areaToArray(area);
+		int i = 0;
+		for( int cell : cells) {
+			int[] coords = Sudoku.caseIntToCoor(cell);
+			if ( nums[i] != 0 ) {
+				this.setCell(coords[0], coords[1], nums[i]);
+			}
+			i++;
+		}
+	}
+	
+	public void fill(int level) {
+		
+		switch (level) {
+
+			case 0 : // Easy
+				this.setCell(0, 0, 5);
+				this.setCell(1, 1, 1);
+				this.setCell(1, 2, 7);
+				this.setCell(1, 3, 5);
+				this.setCell(1, 4, 3);
+				this.setCell(1, 8, 2);
+				this.setCell(2, 4, 2);
+				this.setCell(2, 5, 7);
+				this.setCell(2, 7, 5);
+				this.setCell(2, 8, 6);
+				this.setCell(3, 4, 1);
+				this.setCell(3, 5, 3);
+				this.setCell(3, 6, 4);
+				this.setCell(4, 1, 5);
+				this.setCell(4, 7, 9);
+				this.setCell(5, 2, 8);
+				this.setCell(5, 3, 6);
+				this.setCell(5, 4, 5);
+				this.setCell(6, 0, 9);
+				this.setCell(6, 1, 4);
+				this.setCell(6, 3, 2);
+				this.setCell(6, 4, 7);
+				this.setCell(7, 0, 7);
+				this.setCell(7, 4, 8);
+				this.setCell(7, 5, 5);
+				this.setCell(7, 6, 1);
+				this.setCell(7, 7, 2);
+				this.setCell(8, 8, 7);
+				break;
+			case 1 : // Medium
+				this.setArea(1, new int[]{0, 0, 5, 0, 0, 0, 7, 6, 0});
+				this.setArea(2, new int[]{0, 9, 0, 0, 0, 2, 0, 0, 8});
+				this.setArea(3, new int[]{0, 0, 1, 0, 7, 3, 2, 0, 0});
+				this.setArea(4, new int[]{0, 1, 2, 0, 0, 0, 3, 0, 0});
+				this.setArea(5, new int[]{0, 0, 9, 2, 0, 3, 1, 0, 0});
+				this.setArea(6, new int[]{0, 0, 4, 0, 0, 0, 9, 6, 0});
+				this.setArea(7, new int[]{0, 0, 1, 9, 7, 0, 5, 0, 0});
+				this.setArea(8, new int[]{9, 0, 0, 5, 0, 0, 0, 3, 0});
+				this.setArea(9, new int[]{0, 5, 8, 0, 0, 0, 7, 0, 0});
+				break;
+			case 2 : // Hard
+				this.setArea(1, new int[]{0, 1, 0, 0, 0, 6, 5, 0, 3});
+				this.setArea(2, new int[]{0, 0, 4, 8, 0, 5, 7, 0, 1});
+				this.setArea(3, new int[]{0, 0, 0, 0, 0, 1, 9, 0, 0});
+				this.setArea(4, new int[]{8, 0, 4, 0, 0, 0, 0, 0, 0});
+				this.setArea(5, new int[]{0, 0, 7, 0, 0, 0, 3, 0, 0});
+				this.setArea(6, new int[]{0, 0, 0, 0, 0, 0, 6, 0, 9});
+				this.setArea(7, new int[]{0, 0, 1, 6, 0, 0, 0, 0, 0});
+				this.setArea(8, new int[]{5, 0, 8, 4, 0, 3, 2, 0, 0});
+				this.setArea(9, new int[]{2, 0, 4, 1, 0, 0, 0, 5, 0});
+				break;
+			case 3 : // Very Hard
+				break;
+			case 4 : // Expert
+				break;
+		}
 		
 	}
 }
