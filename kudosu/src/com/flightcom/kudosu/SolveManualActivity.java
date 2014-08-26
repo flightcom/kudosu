@@ -182,24 +182,6 @@ public class SolveManualActivity extends Activity {
 							}
 						});
 
-//						caseFinale.setOnTouchListener(new OnTouchListener(){
-//							
-//							public boolean onTouch(View v, MotionEvent event) {
-//
-//								if (event.getAction() == MotionEvent.ACTION_HOVER_MOVE ) {
-//									v.setBackgroundColor(Color.GREEN);
-//									selectedCase = (EditText) v;
-//									return true;
-//								} else {
-//									v.setBackground(coin);
-//								}
-//								
-//								return false;
-//								
-//							}
-//
-//						});
-
 						caseFinale.setInputType(InputType.TYPE_NULL);
 						caseFinale.setBackground(coin);
 						caseFinale.setWidth((int)width/9);
@@ -313,10 +295,11 @@ public class SolveManualActivity extends Activity {
 				//for (int nb : )
 				
 				mCase.setTextColor(color);
-				String val = (sudoku.grid[i][j] == null ) ? sudoku.solver.candidates[i][j].toString() : Integer.toString(sudoku.grid[i][j]);
-				//String val = (sudoku.grid[i][j] == null ) ? "" : Integer.toString(sudoku.grid[i][j]);
-				float size = (sudoku.grid[i][j] == null ) ? 10 : 28;
-				mCase.setTextSize(size);
+				//String val = (sudoku.grid[i][j] == null ) ? sudoku.solver.candidates[i][j].toString() : Integer.toString(sudoku.grid[i][j]);
+				//String val = (sudoku.grid[i][j] == null ) ? (sudoku.solver.candidates[i][j] == null ) ? "" : sudoku.solver.candidates[i][j].toString() : Integer.toString(sudoku.grid[i][j]);
+				String val = (sudoku.grid[i][j] == null ) ? "" : Integer.toString(sudoku.grid[i][j]);
+				//float size = (sudoku.grid[i][j] == null ) ? 10 : 28;
+				//mCase.setTextSize(size);
 				mCase.setText(val);
 
 			}

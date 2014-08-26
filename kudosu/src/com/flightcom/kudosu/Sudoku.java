@@ -18,7 +18,7 @@ public class Sudoku {
 	// Grille de départ avec remplissage du joueur
 	Integer[][] gridUser = new Integer[9][9];
 	
-	SudokuSolver solver;
+	SudokuSolver solver	= new SudokuSolver(this);
 	
 	boolean gridReady = false;
 
@@ -386,7 +386,6 @@ public class Sudoku {
 
 	public void solve(){
 		
-		this.solver = new SudokuSolver(this);
 		int process = -1;
 		do {
 			process = solver.run();
@@ -497,9 +496,27 @@ public class Sudoku {
 				this.setArea(8, new int[]{5, 0, 8, 4, 0, 3, 2, 0, 0});
 				this.setArea(9, new int[]{2, 0, 4, 1, 0, 0, 0, 5, 0});
 				break;
-			case 3 : // Very Hard
+			case 3 : // Expert
+				this.setArea(1, new int[]{0, 0, 6, 0, 0, 0, 0, 4, 0});
+				this.setArea(2, new int[]{0, 0, 0, 8, 6, 0, 3, 5, 0});
+				this.setArea(3, new int[]{0, 0, 4, 7, 3, 0, 0, 0, 2});
+				this.setArea(4, new int[]{1, 7, 0, 0, 9, 0, 0, 0, 8});
+				this.setArea(5, new int[]{4, 0, 0, 0, 0, 0, 0, 0, 6});
+				this.setArea(6, new int[]{6, 0, 0, 0, 8, 0, 0, 1, 7});
+				this.setArea(7, new int[]{2, 0, 0, 0, 6, 7, 8, 0, 0});
+				this.setArea(8, new int[]{0, 8, 1, 0, 4, 3, 0, 0, 0});
+				this.setArea(9, new int[]{0, 4, 0, 0, 0, 0, 3, 0, 0});
 				break;
-			case 4 : // Expert
+			case 4 : // Extreme
+				this.setArea(1, new int[]{0, 0, 9, 7, 0, 0, 0, 2, 0});
+				this.setArea(2, new int[]{7, 4, 8, 0, 0, 0, 1, 0, 9});
+				this.setArea(3, new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0});
+				this.setArea(4, new int[]{0, 0, 7, 0, 6, 4, 0, 9, 8});
+				this.setArea(5, new int[]{0, 0, 0, 0, 1, 0, 0, 0, 0});
+				this.setArea(6, new int[]{2, 4, 0, 5, 9, 0, 3, 0, 0});
+				this.setArea(7, new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0});
+				this.setArea(8, new int[]{8, 0, 3, 0, 0, 0, 2, 7, 5});
+				this.setArea(9, new int[]{0, 2, 0, 0, 0, 6, 9, 0, 0});
 				break;
 		}
 		

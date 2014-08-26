@@ -26,11 +26,12 @@ public class SudokuSolver {
 	
 		int process = 0;
 		
-		int nb1 = 0, nb2 = 0, nb3 = 0;
+		int nb1 = 0, nb2 = 0, nb3 = 0, nb4 = 0;
 		
 		do { this.checkCandidates(); nb1 = this.updateGrid(); Log.i(null, "nb1 =  " + nb1); process+= nb1; } while (nb1 > 0);
 		do { this.checkUniquePlace(); nb2 = this.updateGrid(); Log.i(null, "nb2 =  " + nb2); process+= nb2; } while (nb2 > 0);
 		do { this.checkImpossibleCandidates(); nb3 = this.updateGrid(); Log.i(null, "nb3 =  " + nb3); process+= nb3; } while (nb3 > 0);
+		do { this.checkSameCandidates(); nb4 = this.updateGrid(); Log.i(null, "nb4 =  " + nb4); process+= nb4; } while (nb4 > 0);
 		
 		return process;
 
@@ -240,6 +241,79 @@ public class SudokuSolver {
 				z++;
 			}
 			
+		}
+		
+	}
+	
+	private void checkSameCandidates() {
+		
+		for ( Integer i : this.numbersList ) {
+			
+			for ( Integer j : this.numbersList ) {
+				
+				ArrayList<Integer> candidats = this.candidates[i][j];
+				int nbCandidats = candidats.size();
+				ArrayList<Integer> cellsWithSameCandidates = new ArrayList<Integer>();
+				
+				// Check the row
+				ArrayList<Integer> otherCols = (ArrayList<Integer>) this.numbersList.clone();
+				otherCols.remove(j);
+				ArrayList<Integer> colsToDeleteCandidates = otherCols;
+				
+				for ( Integer col : otherCols ) {
+					
+					int idem = 0;
+					for( int candidat : this.candidates[i][j]) {
+						idem += this.candidates[i][col-1].contains(candidat) ? 1 : 0;
+					}
+					
+					if ( idem == nbCandidats ) {
+						cellsWithSameCandidates.add(Sudoku.caseCoordToInt(i, col-1));
+						colsToDeleteCandidates.remove(col-1);
+					}
+					
+				}
+				
+				if ( cellsWithSameCandidates.size() == nbCandidats ) {
+					
+					for ( int c : colsToDeleteCandidates ) {
+						for ( Integer cdt : candidats ) {
+							this.candidates[i][c-1].remove(cdt);
+						}
+					}
+					
+				}
+
+				// Check the col
+				ArrayList<Integer> otherRows = (ArrayList<Integer>) this.numbersList.clone();
+				otherRows.remove(j);
+				ArrayList<Integer> rowsToDeleteCandidates = otherRows;
+				
+				for ( Integer row : otherRows ) {
+					
+					int idem = 0;
+					for( int candidat : this.candidates[i][j]) {
+						idem += this.candidates[row-1][j].contains(candidat) ? 1 : 0;
+					}
+					
+					if ( idem == nbCandidats ) {
+						cellsWithSameCandidates.add(Sudoku.caseCoordToInt(row-1, j));
+						rowsToDeleteCandidates.remove(row-1);
+					}
+					
+				}
+				
+				if ( cellsWithSameCandidates.size() == nbCandidats ) {
+					
+					for ( int r : rowsToDeleteCandidates ) {
+						for ( Integer cdt : candidats ) {
+							this.candidates[r-1][j].remove(cdt);
+						}
+					}
+					
+				}
+
+			}
 		}
 		
 	}
