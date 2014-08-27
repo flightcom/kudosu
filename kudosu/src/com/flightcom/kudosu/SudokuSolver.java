@@ -276,7 +276,14 @@ public class SudokuSolver {
 					ArrayList<Integer> cCandidates = (ArrayList<Integer>) this.candidates[i][col].clone();
 					Collections.sort(cCandidates);
 					
-					if ( cCandidates.toString() == candidats.toString() ) {
+					int idem = 1;
+					
+					for ( Integer cdt : candidats ) {
+						idem += ( this.candidates[i][col].contains(cdt) ) ? 1 : 0;
+					}
+					
+					// if ( cCandidates.toString() == candidats.toString() ) {
+					if ( idem == nbCandidats ) {
 						cellsWithSameCandidatesR.add(Sudoku.caseCoordToInt(i, col));
 						colsToDeleteCandidates.remove(col);
 					}
@@ -298,7 +305,7 @@ public class SudokuSolver {
 				// Check the col
 				ArrayList<Integer> cellsWithSameCandidatesC = new ArrayList<Integer>();
 				ArrayList<Integer> otherRows = (ArrayList<Integer>) mNums.clone();
-				otherRows.remove(j);
+				otherRows.remove(i);
 				ArrayList<Integer> rowsToDeleteCandidates = (ArrayList<Integer>) otherRows.clone();
 
 				cellsWithSameCandidatesC.add(Sudoku.caseCoordToInt(i, j));
@@ -309,11 +316,18 @@ public class SudokuSolver {
 					ArrayList<Integer> rCandidates = (ArrayList<Integer>) this.candidates[row][j].clone();
 					Collections.sort(rCandidates);
 					
-					if ( rCandidates.toString() == candidats.toString() ) {
+					int idem = 1;
+					
+					for ( Integer cdt : candidats ) {
+						idem += ( this.candidates[row][j ].contains(cdt) ) ? 1 : 0;
+					}
+					
+					//if ( rCandidates.toString() == candidats.toString() ) {
+					if ( idem == nbCandidats ) {
 						cellsWithSameCandidatesC.add(Sudoku.caseCoordToInt(row, j));
 						rowsToDeleteCandidates.remove(row);
 					}
-					
+
 				}
 				
 				if ( cellsWithSameCandidatesC.size() == nbCandidats ) {
@@ -329,6 +343,23 @@ public class SudokuSolver {
 				}
 
 			}
+		}
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void checkSameCandidates(String unit, int mCase) {
+		
+		int[] coords = Sudoku.caseIntToCoor(mCase);
+		Set<Integer> candidats = (Set<Integer>) this.candidates[coords[0]][coords[1]];
+		
+		ArrayList<Integer> cells2check;
+		
+		switch ( unit ) {
+		
+			case "row" : cells2check = new ArrayList<Integer>(Arrays.asList(Sudoku.rowToArray(coords[0]))); break;
+			case "col" : cells2check = Sudoku.colToArray(val); break;
+			case "area": cells2check = Sudoku.areaToArray(val);break;
 		}
 		
 	}
