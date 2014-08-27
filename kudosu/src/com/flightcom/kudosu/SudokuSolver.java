@@ -5,7 +5,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import android.util.Log;
 
@@ -13,6 +16,7 @@ public class SudokuSolver {
 
 	Sudoku sudoku;
 	ArrayList<Integer> numbersList = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9));
+	boolean[][] marker = new boolean[9][9];
 	
 	@SuppressWarnings("unchecked")
 	ArrayList<Integer>[][] candidates = new ArrayList[9][9];
@@ -30,10 +34,10 @@ public class SudokuSolver {
 		
 		int nb1 = 0, nb2 = 0, nb3 = 0, nb4 = 0;
 		
-		do { this.checkCandidates(); nb1 = this.updateGrid(); Log.i(null, "nb1 =  " + nb1); process+= nb1; } while (nb1 > 0);
-		do { this.checkUniquePlace(); nb2 = this.updateGrid(); Log.i(null, "nb2 =  " + nb2); process+= nb2; } while (nb2 > 0);
-		do { this.checkImpossibleCandidates(); nb3 = this.updateGrid(); Log.i(null, "nb3 =  " + nb3); process+= nb3; } while (nb3 > 0);
-		do { this.checkSameCandidates(); nb4 = this.updateGrid(); Log.i(null, "nb4 =  " + nb4); process+= nb4; } while (nb4 > 0);
+		do { this.checkCandidates(); nb1 = this.updateGrid(); process+= nb1; } while (nb1 > 0);
+		do { this.checkUniquePlace(); nb2 = this.updateGrid(); process+= nb2; } while (nb2 > 0);
+		do { this.checkImpossibleCandidates(); nb3 = this.updateGrid(); process+= nb3; } while (nb3 > 0);
+		do { this.checkSameCandidates(); nb4 = this.updateGrid(); process+= nb4; } while (nb4 > 0);
 		
 		return process;
 
@@ -67,7 +71,7 @@ public class SudokuSolver {
 
 					// Check the area
 					int area = Sudoku.getAreaFromCase(i, j);
-					int[] areaVals = Sudoku.areaToArray(area);
+					Integer[] areaVals = Sudoku.areaToArray(area);
 					for ( int x : areaVals) {
 						areaNums.add(this.sudoku.getCaseAt(x)) ;
 					}
@@ -96,7 +100,7 @@ public class SudokuSolver {
 		// Check the area
 		for(int area : numbersList) {
 			
-			int[] cellNums = Sudoku.areaToArray(area);
+			Integer[] cellNums = Sudoku.areaToArray(area);
 			
 			for ( int numero : numbersList ) {
 				
@@ -186,7 +190,7 @@ public class SudokuSolver {
 			int z = 0;
 			for(int adj : adjs) {
 				
-				int [] cases = Sudoku.areaToArray(adj);
+				Integer [] cases = Sudoku.areaToArray(adj);
 				char orientation = z < 2 ? 'c' : 'r';
 				
 				// Log.i(null, "Area : " + area + ", Adj : " + adj);
@@ -216,7 +220,7 @@ public class SudokuSolver {
 					if ( stack.size() == 1) { // une seule ligne ou colonne
 
 						// On supprime le numero en tant que candidats dans toute la ligne ou colonne
-						int [] cells = Sudoku.areaToArray(area);
+						Integer [] cells = Sudoku.areaToArray(area);
 
 						switch ( orientation ) {
 							case 'c' : // On compare les numeros de colonnes
@@ -247,7 +251,6 @@ public class SudokuSolver {
 		
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void checkSameCandidates() {
 		
 		ArrayList<Integer> mNums = new ArrayList<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8));
@@ -256,110 +259,77 @@ public class SudokuSolver {
 			
 			for ( Integer j = 0 ; j < mNums.size(); j++ ) {
 				
-				ArrayList<Integer> candidats = (ArrayList<Integer>) this.candidates[i][j].clone();
-				Collections.sort(candidats);
-				int nbCandidats = candidats.size();
-				
-				if ( nbCandidats <= 1) { continue; }
-
-				// Check the row
-				ArrayList<Integer> cellsWithSameCandidatesR = new ArrayList<Integer>();
-				ArrayList<Integer> otherCols = (ArrayList<Integer>) mNums.clone();
-				otherCols.remove(j);
-				ArrayList<Integer> colsToDeleteCandidates = (ArrayList<Integer>) otherCols.clone();
-				colsToDeleteCandidates.remove(j);
-
-				cellsWithSameCandidatesR.add(Sudoku.caseCoordToInt(i, j));
-
-				for ( Integer col : otherCols ) {
+				if ( this.marker[i][j] == false) {
 					
-					ArrayList<Integer> cCandidates = (ArrayList<Integer>) this.candidates[i][col].clone();
-					Collections.sort(cCandidates);
-					
-					int idem = 1;
-					
-					for ( Integer cdt : candidats ) {
-						idem += ( this.candidates[i][col].contains(cdt) ) ? 1 : 0;
-					}
-					
-					// if ( cCandidates.toString() == candidats.toString() ) {
-					if ( idem == nbCandidats ) {
-						cellsWithSameCandidatesR.add(Sudoku.caseCoordToInt(i, col));
-						colsToDeleteCandidates.remove(col);
-					}
-					
-				}
-				
-				if ( cellsWithSameCandidatesR.size() == nbCandidats ) {
-					
-					Log.i("Same Candidates (row)", cellsWithSameCandidatesR.toString() + " have same candidates ("  + candidats.toString() + ")");
-					
-					for ( int c : colsToDeleteCandidates ) {
-						for ( Integer cdt : candidats ) {
-							this.candidates[i][c].remove(cdt);
-						}
-					}
-					
-				}
-
-				// Check the col
-				ArrayList<Integer> cellsWithSameCandidatesC = new ArrayList<Integer>();
-				ArrayList<Integer> otherRows = (ArrayList<Integer>) mNums.clone();
-				otherRows.remove(i);
-				ArrayList<Integer> rowsToDeleteCandidates = (ArrayList<Integer>) otherRows.clone();
-
-				cellsWithSameCandidatesC.add(Sudoku.caseCoordToInt(i, j));
-				rowsToDeleteCandidates.remove(i);
-				
-				for ( Integer row : otherRows ) {
-					
-					ArrayList<Integer> rCandidates = (ArrayList<Integer>) this.candidates[row][j].clone();
-					Collections.sort(rCandidates);
-					
-					int idem = 1;
-					
-					for ( Integer cdt : candidats ) {
-						idem += ( this.candidates[row][j ].contains(cdt) ) ? 1 : 0;
-					}
-					
-					//if ( rCandidates.toString() == candidats.toString() ) {
-					if ( idem == nbCandidats ) {
-						cellsWithSameCandidatesC.add(Sudoku.caseCoordToInt(row, j));
-						rowsToDeleteCandidates.remove(row);
-					}
+					this.checkSameCandidates("row", Sudoku.caseCoordToInt(i, j));
+					this.checkSameCandidates("col", Sudoku.caseCoordToInt(i, j));
+					this.checkSameCandidates("area", Sudoku.caseCoordToInt(i, j));
 
 				}
 				
-				if ( cellsWithSameCandidatesC.size() == nbCandidats ) {
-					
-					Log.i("Same Candidates (col)", cellsWithSameCandidatesC.toString() + " have same candidates ("  + candidats.toString() + ")");
-
-					for ( int r : rowsToDeleteCandidates ) {
-						for ( Integer cdt : candidats ) {
-							this.candidates[r][j].remove(cdt);
-						}
-					}
-					
-				}
-
 			}
 		}
 		
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void checkSameCandidates(String unit, int mCase) {
+	public void checkSameCandidates(String unit, Integer mCase) {
 		
 		int[] coords = Sudoku.caseIntToCoor(mCase);
-		Set<Integer> candidats = (Set<Integer>) this.candidates[coords[0]][coords[1]];
-		
-		ArrayList<Integer> cells2check;
+		Set<Integer> candidats = new TreeSet<Integer>(this.candidates[coords[0]][coords[1]]);
+
+		if ( candidats.size() <= 1) { return; }
+
+		ArrayList<Integer> unitCells;
+		ArrayList<Integer> cellsIdem = new ArrayList<Integer>();
 		
 		switch ( unit ) {
+			case "row" : unitCells = new ArrayList<Integer>(Arrays.asList(Sudoku.rowToArray(coords[0]))); break;
+			case "col" : unitCells = new ArrayList<Integer>(Arrays.asList(Sudoku.colToArray(coords[1]))); break;
+			case "area": unitCells = new ArrayList<Integer>(Arrays.asList(Sudoku.areaToArray(Sudoku.getAreaFromCase(coords[0], coords[1])))); break;
+			default: unitCells = null;
+		}
 		
-			case "row" : cells2check = new ArrayList<Integer>(Arrays.asList(Sudoku.rowToArray(coords[0]))); break;
-			case "col" : cells2check = Sudoku.colToArray(val); break;
-			case "area": cells2check = Sudoku.areaToArray(val);break;
+		ArrayList<Integer> cells2check = (ArrayList<Integer>)unitCells.clone();
+		cells2check.remove(mCase);
+		cellsIdem.add(mCase);
+		
+		ArrayList<String> sCandidats = new ArrayList<String>();
+		
+		for ( Integer cell : cells2check ) {
+			
+			int[] co = Sudoku.caseIntToCoor(cell);
+			Set<Integer> cdts = new TreeSet<Integer>(this.candidates[co[0]][co[1]]);
+			
+			if ( cdts.size() != candidats.size() ) { continue; }
+
+			//Log.i("check " + mCase.toString(), candidats.toString() + " " + cdts.toString() + " " + (candidats.equals(cdts) ? "yes" : "no"));
+			if ( candidats.equals(cdts) ) {
+				cellsIdem.add(cell);
+			}
+			
+		}
+		
+		unitCells.removeAll(cellsIdem);
+		
+		if ( cellsIdem.size() == candidats.size() ) {
+			
+			Log.i("Same Candidates ("+unit+")", cellsIdem.toString() + " have same candidates ("  + candidats.toString() + ")");
+
+			// On supprime les candidats
+			for ( Integer uc : unitCells ) {
+				
+				int[] co = Sudoku.caseIntToCoor(uc);
+				this.candidates[co[0]][co[1]].removeAll(candidats);
+			}
+			
+			// On marque les cellules
+			for ( Integer id : cellsIdem ) {
+				
+				int[] co = Sudoku.caseIntToCoor(id);
+				this.marker[co[0]][co[1]] = true;
+				
+			}
 		}
 		
 	}
@@ -376,7 +346,6 @@ public class SudokuSolver {
 			
 					nbCellsFound++;
 					this.sudoku.grid[i][j] = this.candidates[i][j].get(0);
-					// Log.i(null, "Candidats " + Integer.toString(i)+','+Integer.toString(j) + " : " + this.candidates[i][j].toString() );
 				
 				}
 			}

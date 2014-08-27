@@ -67,7 +67,7 @@ public class Sudoku {
 				
 				// On récupère ceux de la case
 				int area = Sudoku.getAreaFromCase(i,z);
-				int[] areaValues = this.areaToArray(area);
+				Integer[] areaValues = this.areaToArray(area);
 				for(int x : areaValues){
 					if(!forbiddenNumbs.contains(x))
 						forbiddenNumbs.add(x);
@@ -170,58 +170,61 @@ public class Sudoku {
 		
 	}
 	
-	public static int[] areaToArray(int area){
+	public static Integer[] areaToArray(int area){
 
-		int cases[] = null; 
+		Integer [] cases; 
 		
 		switch(area){
-			case 1: cases = new int[]{11, 12, 13, 21, 22, 23, 31, 32, 33}; break;
-			case 2: cases = new int[]{14, 15, 16, 24, 25, 26, 34, 35, 36}; break;
-			case 3: cases = new int[]{17, 18, 19, 27, 28, 29, 37, 38, 39}; break;
-			case 4: cases = new int[]{41, 42, 43, 51, 52, 53, 61, 62, 63}; break;
-			case 5: cases = new int[]{44, 45, 46, 54, 55, 56, 64, 65, 66}; break;
-			case 6: cases = new int[]{47, 48, 49, 57, 58, 59, 67, 68, 69}; break;
-			case 7: cases = new int[]{71, 72, 73, 81, 82, 83, 91, 92, 93}; break;
-			case 8: cases = new int[]{74, 75, 76, 84, 85, 86, 94, 95, 96}; break;
-			case 9: cases = new int[]{77, 78, 79, 87, 88, 89, 97, 98, 99}; break;
+			case 1: cases = new Integer[]{11, 12, 13, 21, 22, 23, 31, 32, 33}; break;
+			case 2: cases = new Integer[]{14, 15, 16, 24, 25, 26, 34, 35, 36}; break;
+			case 3: cases = new Integer[]{17, 18, 19, 27, 28, 29, 37, 38, 39}; break;
+			case 4: cases = new Integer[]{41, 42, 43, 51, 52, 53, 61, 62, 63}; break;
+			case 5: cases = new Integer[]{44, 45, 46, 54, 55, 56, 64, 65, 66}; break;
+			case 6: cases = new Integer[]{47, 48, 49, 57, 58, 59, 67, 68, 69}; break;
+			case 7: cases = new Integer[]{71, 72, 73, 81, 82, 83, 91, 92, 93}; break;
+			case 8: cases = new Integer[]{74, 75, 76, 84, 85, 86, 94, 95, 96}; break;
+			case 9: cases = new Integer[]{77, 78, 79, 87, 88, 89, 97, 98, 99}; break;
+			default: cases = null;
 		}
 		
 		return cases;
 	}
 
-	public static int[] rowToArray(int row){
+	public static Integer[] rowToArray(int row){
 
-		int cases[] = null; 
+		Integer [] cases; 
 		
 		switch(row){
-			case 1: cases = new int[]{11, 12, 13, 14, 15, 16, 17, 18, 19}; break;
-			case 2: cases = new int[]{21, 22, 23, 24, 25, 26, 27, 28, 29}; break;
-			case 3: cases = new int[]{31, 32, 33, 34, 35, 36, 37, 38, 39}; break;
-			case 4: cases = new int[]{41, 42, 43, 44, 45, 46, 47, 48, 49}; break;
-			case 5: cases = new int[]{51, 52, 53, 54, 55, 56, 57, 58, 59}; break;
-			case 6: cases = new int[]{61, 62, 63, 64, 65, 66, 67, 68, 69}; break;
-			case 7: cases = new int[]{71, 72, 73, 74, 75, 76, 77, 78, 79}; break;
-			case 8: cases = new int[]{81, 82, 83, 84, 85, 86, 87, 88, 89}; break;
-			case 9: cases = new int[]{91, 92, 93, 94, 95, 96, 97, 98, 99}; break;
+			case 0: cases = new Integer[]{11, 12, 13, 14, 15, 16, 17, 18, 19}; break;
+			case 1: cases = new Integer[]{21, 22, 23, 24, 25, 26, 27, 28, 29}; break;
+			case 2: cases = new Integer[]{31, 32, 33, 34, 35, 36, 37, 38, 39}; break;
+			case 3: cases = new Integer[]{41, 42, 43, 44, 45, 46, 47, 48, 49}; break;
+			case 4: cases = new Integer[]{51, 52, 53, 54, 55, 56, 57, 58, 59}; break;
+			case 5: cases = new Integer[]{61, 62, 63, 64, 65, 66, 67, 68, 69}; break;
+			case 6: cases = new Integer[]{71, 72, 73, 74, 75, 76, 77, 78, 79}; break;
+			case 7: cases = new Integer[]{81, 82, 83, 84, 85, 86, 87, 88, 89}; break;
+			case 8: cases = new Integer[]{91, 92, 93, 94, 95, 96, 97, 98, 99}; break;
+			default: cases = null;
 		}
 		
 		return cases;
 	}
 
-	public static int[] colToArray(int col){
+	public static Integer[] colToArray(int col){
 
-		int cases[] = null; 
+		Integer [] cases;
 		
 		switch(col){
-			case 1: cases = new int[]{11, 21, 31, 41, 51, 61, 71, 81, 91}; break;
-			case 2: cases = new int[]{12, 22, 32, 42, 52, 62, 72, 82, 92}; break;
-			case 3: cases = new int[]{13, 23, 33, 43, 53, 63, 73, 83, 93}; break;
-			case 4: cases = new int[]{14, 24, 34, 44, 54, 64, 74, 84, 94}; break;
-			case 5: cases = new int[]{15, 25, 35, 45, 55, 65, 75, 85, 95}; break;
-			case 6: cases = new int[]{16, 26, 36, 46, 56, 66, 76, 86, 96}; break;
-			case 7: cases = new int[]{17, 27, 37, 47, 57, 67, 77, 87, 97}; break;
-			case 8: cases = new int[]{18, 28, 38, 48, 58, 68, 78, 88, 98}; break;
-			case 9: cases = new int[]{19, 29, 39, 49, 59, 69, 79, 89, 99}; break;
+			case 0: cases = new Integer[]{11, 21, 31, 41, 51, 61, 71, 81, 91}; break;
+			case 1: cases = new Integer[]{12, 22, 32, 42, 52, 62, 72, 82, 92}; break;
+			case 2: cases = new Integer[]{13, 23, 33, 43, 53, 63, 73, 83, 93}; break;
+			case 3: cases = new Integer[]{14, 24, 34, 44, 54, 64, 74, 84, 94}; break;
+			case 4: cases = new Integer[]{15, 25, 35, 45, 55, 65, 75, 85, 95}; break;
+			case 5: cases = new Integer[]{16, 26, 36, 46, 56, 66, 76, 86, 96}; break;
+			case 6: cases = new Integer[]{17, 27, 37, 47, 57, 67, 77, 87, 97}; break;
+			case 7: cases = new Integer[]{18, 28, 38, 48, 58, 68, 78, 88, 98}; break;
+			case 8: cases = new Integer[]{19, 29, 39, 49, 59, 69, 79, 89, 99}; break;
+			default: cases = null;
 		}
 		
 		return cases;
@@ -231,7 +234,7 @@ public class Sudoku {
 		
 		boolean res = true;
 		
-		int[] aArea = this.areaToArray(area);
+		Integer[] aArea = this.areaToArray(area);
 		ArrayList<Integer> numbersInArea = new ArrayList<Integer>(); 
 		for(int x : aArea){
 			if(x != 0 && !numbersInArea.contains(x)){
@@ -413,7 +416,7 @@ public class Sudoku {
 	public int countDigitInArea(int area){
 		
 		int count = 0;
-		int [] digitInArea = Sudoku.areaToArray(area);
+		Integer [] digitInArea = Sudoku.areaToArray(area);
 		for(int x : digitInArea){
 			if( x != 0)
 				count++;
@@ -467,7 +470,7 @@ public class Sudoku {
 	
 	public void setArea(int area, int[] nums) {
 		
-		int[] cells = Sudoku.areaToArray(area);
+		Integer[] cells = Sudoku.areaToArray(area);
 		int i = 0;
 		for( int cell : cells) {
 			int[] coords = Sudoku.caseIntToCoor(cell);
