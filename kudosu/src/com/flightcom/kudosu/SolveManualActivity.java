@@ -296,8 +296,8 @@ public class SolveManualActivity extends Activity {
 				
 				mCase.setTextColor(color);
 				//String val = (sudoku.grid[i][j] == null ) ? sudoku.solver.candidates[i][j].toString() : Integer.toString(sudoku.grid[i][j]);
-				//String val = (sudoku.grid[i][j] == null ) ? (sudoku.solver.candidates[i][j] == null ) ? "" : sudoku.solver.candidates[i][j].toString() : Integer.toString(sudoku.grid[i][j]);
-				String val = (sudoku.grid[i][j] == null ) ? "" : Integer.toString(sudoku.grid[i][j]);
+				String val = (sudoku.grid[i][j] == null ) ? (sudoku.solver.candidates[i][j] == null ) ? "" : sudoku.solver.candidates[i][j].toString() : Integer.toString(sudoku.grid[i][j]);
+				//String val = (sudoku.grid[i][j] == null ) ? "" : Integer.toString(sudoku.grid[i][j]);
 				//float size = (sudoku.grid[i][j] == null ) ? 10 : 28;
 				//mCase.setTextSize(size);
 				mCase.setText(val);

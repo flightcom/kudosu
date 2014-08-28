@@ -562,4 +562,27 @@ public class Sudoku {
 		}
 		
 	}
+	
+	public static ArrayList<Integer> getIntersection( Integer area, Integer row, Integer col ) {
+		
+		ArrayList<Integer> res = new ArrayList<Integer>();
+
+		ArrayList<Integer> cases = new ArrayList<Integer>(Arrays.asList(Sudoku.areaToArray(area)));
+		ArrayList<Integer> cases2del = new ArrayList<Integer>();
+		
+		for ( Integer mCase : cases ) {
+			int[] co = Sudoku.caseIntToCoor(mCase);
+			if ( row == null ) { // check col
+				if ( col == co[1]) { cases2del.add(mCase); }
+			}
+			else if ( col == null ) { // check row
+				if ( row == co[0]) { cases2del.add(mCase); }
+			}
+		}
+		
+		res = (ArrayList<Integer>) cases.clone();
+		res.removeAll(cases2del);
+		
+		return res;
+	}
 }
