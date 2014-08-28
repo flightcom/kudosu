@@ -251,6 +251,28 @@ public class SudokuSolver {
 		
 	}
 	
+	private void checkImpossibleCandidates2() {
+		
+		for ( int area : this.numbersList ) {
+			
+			Integer [] cases = Sudoku.areaToArray(area);
+			
+			for ( int numero : this.numbersList ) {
+			
+				for ( Integer mCase : cases ) {
+					
+					int[] coords = Sudoku.caseIntToCoor(mCase);
+					
+					
+					
+				}
+				
+			}
+			
+		}
+		
+	}
+	
 	private void checkSameCandidates() {
 		
 		ArrayList<Integer> mNums = new ArrayList<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8));
