@@ -52,7 +52,7 @@ public class SudokuSolver {
 			for ( int j = 0; j < this.sudoku.grid[i].length; j++) {
 				
 				Integer cell = this.sudoku.grid[i][j];
-				ArrayList<Integer> candidates = this.candidates[i][j] == null ? (ArrayList<Integer>) numbersList.clone() : this.candidates[i][j];
+				ArrayList<Integer> candidates = (ArrayList<Integer>) (this.candidates[i][j] == null ? (ArrayList<Integer>) numbersList.clone() : this.candidates[i][j]);
 				ArrayList<Integer> notCandidates = new ArrayList<Integer>();
 				
 				if( cell == null ) {
@@ -458,5 +458,5 @@ public class SudokuSolver {
 		return nbCellsFound;
 
 	}
-	
+
 }

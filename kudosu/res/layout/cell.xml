@@ -2,5 +2,7 @@
 <EditText xmlns:android="http://schemas.android.com/apk/res/android" 
     android:gravity="center"
     android:cursorVisible="false"
-    android:inputType="textNoSuggestions"
+    android:lines="3"
+    android:inputType="textNoSuggestions|textMultiLine"
+    android:singleLine="false"
     style="@style/cell" />

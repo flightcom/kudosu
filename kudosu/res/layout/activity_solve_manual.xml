@@ -6,13 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="0dip" >
-
-    <view class="com.flightcom.kudosu.MChronometer"
-        android:id="@+id/chrono"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="24sp" />
     
     <LinearLayout android:id="@+id/gridlayout"
         android:orientation="vertical"

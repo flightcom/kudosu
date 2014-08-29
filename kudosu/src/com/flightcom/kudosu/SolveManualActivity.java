@@ -1,5 +1,7 @@
 package com.flightcom.kudosu;
 
+import java.util.ArrayList;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -271,9 +273,9 @@ public class SolveManualActivity extends Activity {
 		public void onClick(View v) {
 			
 			//chrono.setBase(SystemClock.elapsedRealtime());
-			chrono.start();
+			//chrono.start();
 			sudoku.solve();
-			chrono.stop();
+			//chrono.stop();
 			print();
 			
 		}
@@ -296,9 +298,9 @@ public class SolveManualActivity extends Activity {
 				
 				mCase.setTextColor(color);
 				//String val = (sudoku.grid[i][j] == null ) ? sudoku.solver.candidates[i][j].toString() : Integer.toString(sudoku.grid[i][j]);
-				String val = (sudoku.grid[i][j] == null ) ? (sudoku.solver.candidates[i][j] == null ) ? "" : sudoku.solver.candidates[i][j].toString() : Integer.toString(sudoku.grid[i][j]);
-				//String val = (sudoku.grid[i][j] == null ) ? "" : Integer.toString(sudoku.grid[i][j]);
-				//float size = (sudoku.grid[i][j] == null ) ? 10 : 28;
+				//String val = (sudoku.grid[i][j] == null ) ? (sudoku.solver.candidates[i][j] == null ) ? "" : sudoku.solver.candidates[i][j].toString() : Integer.toString(sudoku.grid[i][j]);
+				String val = (sudoku.grid[i][j] == null ) ? "" : Integer.toString(sudoku.grid[i][j]);
+				//float size = (sudoku.grid[i][j] == null ) ? 10 : 30;
 				//mCase.setTextSize(size);
 				mCase.setText(val);
 
@@ -308,4 +310,27 @@ public class SolveManualActivity extends Activity {
 		
 	}	
 	
+	static String toString(ArrayList<Integer> al) {
+		
+		String result = "";
+		
+		int cpt = 0;
+		for ( int i = 1; i < 9; i++ ) {
+			if ( al.get(cpt) ==  i ) {
+				result +=  i;
+				cpt++;
+				if ( cpt == al.size() ) {
+					return result;
+				}
+			}
+			else {
+				result += "  ";
+			}
+			result += result.length() % 5 == 0 ? "\n" : "  ";
+		}
+		
+		return null;
+		
+	}
+
 }
