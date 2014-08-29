@@ -2,7 +2,6 @@
     android:id="@+id/root"
     android:keepScreenOn="true"
     android:orientation="vertical"
-    android:background="#111111"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:paddingTop="0dp" >

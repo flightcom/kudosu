@@ -5,4 +5,10 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="lightgray">#DDDDDD</color>
+    <color name="myBlue">#29b9ff</color>
+    <color name="myBlueLight">#39c9ff</color>
+    <color name="myBlueDark">#19a9ef</color>
+<!--     <color name="myBlue">#222222</color>
+    <color name="myBlueLight">#333333</color>
+    <color name="myBlueDark">#111111</color> -->
 </resources>

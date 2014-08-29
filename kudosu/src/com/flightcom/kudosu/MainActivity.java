@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
-            	Toast.makeText(MainActivity.this,"The interstitial is loaded", Toast.LENGTH_SHORT).show();
+            	Toast.makeText(getApplicationContext(),"The interstitial is loaded", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -64,7 +64,7 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
+
 	private OnClickListener onPlayButtonClickListener = new OnClickListener(){
 		
 		@Override

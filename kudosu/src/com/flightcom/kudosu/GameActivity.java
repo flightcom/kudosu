@@ -1,45 +1,61 @@
 package com.flightcom.kudosu;
 
+import java.util.ArrayList;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnKeyListener;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.Toast;
 
-public class PlayActivity extends Activity {
+public class GameActivity extends Activity {
 	
 	EditText selectedCase = null;
-	Sudoku sudoku;
 	Chronometer chrono;
+	Sudoku sudoku;
+	SudokuSolver solver;
+	AlertDialog levelDialog;
+	int height;
+	int width;
+	ArrayList<EditText> cases = new ArrayList<EditText>();
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.solve, menu);
+		return true;
+	}
+
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		overridePendingTransition(R.anim.anim_in, R.anim.anim_out);
+		setContentView(R.layout.activity_solve_manual);
 		
-		setContentView(R.layout.activity_play);
-		
-		LinearLayout root = (LinearLayout) findViewById(R.id.root);
+		final LinearLayout root = (LinearLayout) findViewById(R.id.root);
 
-		Bundle bundle = getIntent().getExtras();
-		int level = bundle.getInt("level");
-		sudoku = new Sudoku(level);
-		chrono = (Chronometer) findViewById(R.id.chrono);
+		this.sudoku = new Sudoku();
+		this.chrono = (Chronometer) findViewById(R.id.chrono);
 
 		Button bt1 = (Button) findViewById(R.id.button1);
 		Button bt2 = (Button) findViewById(R.id.button2);
@@ -53,10 +69,9 @@ public class PlayActivity extends Activity {
 		
 		Button btDel = (Button) findViewById(R.id.buttonDel);
 		Button btBack = (Button) findViewById(R.id.buttonBack);
-		Button btPause = (Button) findViewById(R.id.buttonPause);
 		Button btVal = (Button) findViewById(R.id.buttonValider);
 
-		Button[] buttons = { bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btDel, btBack, btPause, btVal };
+		Button[] buttons = { bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btDel, btBack, btVal };
 		
 		bt1.setOnClickListener(clickNumberListener);
 		bt2.setOnClickListener(clickNumberListener);
@@ -69,17 +84,33 @@ public class PlayActivity extends Activity {
 		bt9.setOnClickListener(clickNumberListener);
 		
 		btDel.setOnClickListener(clickDelListener);
-		btVal.setOnClickListener(validateListener);
 
-		// On r�cup�re les dimensions de l'�cran
+		// On récupère les dimensions de l'écran
 		DisplayMetrics displaymetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-		int width = displaymetrics.widthPixels;
-		int height = displaymetrics.heightPixels;
-		
-		LinearLayout lSolve = (LinearLayout) findViewById(R.id.gridlayout);
 
-		for(int i = 0; i < 3; i++){
+		final LinearLayout lSolve = (LinearLayout) findViewById(R.id.gridlayout);
+
+	    ViewTreeObserver vto = root.getViewTreeObserver();
+	    vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+					
+	       @Override
+	       public void onGlobalLayout() {		    
+	           	//remove listener to ensure only one call is made.
+	    	   	root.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+			   	height = root.getHeight();
+			   	width = root.getWidth();
+				Log.i(null, "Total height : " + height);
+				for ( EditText mCase : cases ) {
+					mCase.setWidth((int)width/9);
+					mCase.setHeight((int)width/9);
+				}
+				int h = lSolve.getHeight();
+				Log.i(null, "Grid height : " + h);
+	       }
+	    });
+	    
+	    for(int i = 0; i < 3; i++){
 			LinearLayout lCasesVert = new LinearLayout(this);
 			lCasesVert.setOrientation(LinearLayout.HORIZONTAL);
 			lCasesVert.setGravity(Gravity.TOP);
@@ -140,38 +171,11 @@ public class PlayActivity extends Activity {
 							}
 						});
 
-//						caseFinale.setOnTouchListener(new OnTouchListener(){
-//
-//							@Override
-//							public void onTouch(View v) {
-//								// TODO Auto-generated method stub
-//									if(v.hasFocus()){
-//										v.setBackgroundColor(Color.GREEN);
-//										selectedCase = (EditText) v;
-//									} else {
-//										v.setBackground(coin);
-//								}
-//							}
-//
-//						});
-						
 						caseFinale.setInputType(InputType.TYPE_NULL);
 						caseFinale.setBackground(coin);
-						int caseValueI = sudoku.getCaseAt(Integer.parseInt(posX), Integer.parseInt(posY));
-						String caseValueS = (caseValueI == 0) ? "" : Integer.toString(caseValueI);
-						String caseNum_S = posX + posY;
-						int caseNum_I = Integer.parseInt(caseNum_S);
-						caseFinale.setText(caseValueS);
-						if ( caseValueI != 0 ) {
-							caseFinale.setFocusable(false);
-							caseFinale.setTextColor(Color.BLACK);
-						}
-						else {
-							caseFinale.setTextColor(Color.BLUE);
-						}
-						caseFinale.setWidth((int)width/9);
-						caseFinale.setHeight((int)width/9);
-
+						
+						cases.add(caseFinale);
+						
 						lCaseVert.addView(caseFinale);
 					}
 
@@ -184,22 +188,6 @@ public class PlayActivity extends Activity {
 			lSolve.addView(lCasesVert);
 		}
 		
-		int gridHeight = lSolve.getLayoutParams().height;
-		LinearLayout buttonsLayout = (LinearLayout)findViewById(R.id.buttonlayout);
-		LayoutParams buttonsLayoutParams = (LayoutParams)buttonsLayout.getLayoutParams();
-		int buttonsHeight = ((LinearLayout)findViewById(R.id.buttonlayout)).getLayoutParams().height;
-
-		for(int i = 0; i < buttons.length; i++) {
-			LayoutParams childParams = (LayoutParams)buttons[i].getLayoutParams();
-			childParams.height = (height - gridHeight)/10;
-		}
-		
-//		buttonsLayoutParams.height = height - gridHeight;
-		//root.addView(btn);
-		 
-		chrono.start();
-		//setContentView(lSolve);
-		//setContentView(R.layout.activity_solve);
 	}
 
 	protected void onWindowFocusChanged() {
@@ -209,18 +197,42 @@ public class PlayActivity extends Activity {
 		
 	}
 
-	protected void onResume() {
-		
-		super.onResume();
-		View decorView = getWindow().getDecorView();
-		decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-		
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	    super.onConfigurationChanged(newConfig);
+
+		LinearLayout root = (LinearLayout) findViewById(R.id.root);
+	   	int height = root.getHeight();
+	   	int width = root.getWidth();
+
+	   	// Checks the orientation of the screen
+	    if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+	        for ( EditText mCase : this.cases ) {
+				mCase.setWidth((int)height/9);
+				mCase.setHeight((int)height/9);
+	        }
+	        Toast.makeText(getApplicationContext(), "Mode Paysage", Toast.LENGTH_SHORT).show();
+	    } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+	        for ( EditText mCase : this.cases ) {
+				mCase.setWidth((int)width/9);
+				mCase.setHeight((int)width/9);
+	        }
+	        Toast.makeText(getApplicationContext(), "Mode Portrait", Toast.LENGTH_SHORT).show();
+	    }
 	}
+	
+	//	protected void onResume() {
+//		
+//		super.onResume();
+//		View decorView = getWindow().getDecorView();
+//		decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+//		
+//	}
 
 	private OnClickListener clickNumberListener = new View.OnClickListener() {
 
@@ -229,9 +241,10 @@ public class PlayActivity extends Activity {
 			// TODO Auto-generated method stub
 			Button bt = (Button) v;
 			String value = bt.getText().toString();
+			selectedCase.setTextColor(Color.BLACK);
 			selectedCase.setText(value);
 			int[] coord = Sudoku.caseIntToCoor(selectedCase.getId());
-			sudoku.setCell(coord[0], coord[1], Integer.parseInt(value));
+			sudoku.gridUser[coord[0]][coord[1]] = Integer.parseInt(value);
 			
 		}
 	};
@@ -243,6 +256,9 @@ public class PlayActivity extends Activity {
 			// TODO Auto-generated method stub
 			//Button bt = (Button) v;
 			selectedCase.setText("");
+			int id = selectedCase.getId();
+			int[] coords = Sudoku.caseIntToCoor(id);
+			sudoku.del(coords[0], coords[1]);
 		}
 	};
 	
@@ -254,32 +270,6 @@ public class PlayActivity extends Activity {
 			return false;
 		}
 	};
-	
-	private OnClickListener validateListener = new View.OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			boolean isSuccessfullyFilled = true;
-			for(int i = 0; i < sudoku.gridFull.length; i++){
-				for (int j = 0; j < sudoku.gridFull[i].length; j++){
-					//Log.e(null, Integer.toString(sudoku.gridFull[i][j]) + ":" + Integer.toString(sudoku.gridUser[i][j]));
-					EditText et = (EditText) findViewById(Sudoku.caseCoordToInt(i, j));
-					if(sudoku.gridFull[i][j] != sudoku.gridUser[i][j]){
-						et.setBackgroundColor(Color.RED);
-						isSuccessfullyFilled = false;
-					} else {
-						et.setBackgroundColor(Color.GREEN);
-					}
-				}
-			}
-			if(isSuccessfullyFilled == true){
-				chrono.stop();
-				Toast.makeText(getApplicationContext(), "BRAVO !!!", Toast.LENGTH_SHORT).show();
-			}
-			else
-				Toast.makeText(getApplicationContext(), "BOUUH !!!", Toast.LENGTH_SHORT).show();
-		}
-	};
 
+	
 }

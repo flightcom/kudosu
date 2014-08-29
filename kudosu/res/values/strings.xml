@@ -43,4 +43,7 @@
         <item>Very Hard</item>
         <item>Expert</item>
     </string-array>
+
+    <string name="title_activity_game">GameActivity</string>
+
 </resources>

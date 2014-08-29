@@ -15,15 +15,18 @@
     </LinearLayout>
     
     <LinearLayout android:id="@+id/buttonlayout"
+        android:background="@android:color/black"
         android:orientation="vertical"
         android:layout_gravity="bottom"
-        android:paddingTop="10dip"
+        android:paddingTop="0dip"
         android:layout_width="match_parent"
         android:layout_height="fill_parent" >
 
 	    <LinearLayout android:id="@+id/buttonlayout1"
+	        android:background="@android:color/black"
 	        android:weightSum="4"
 	        android:orientation="horizontal"
+	        android:layout_weight="1"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content" >
 	        
@@ -48,6 +51,7 @@
 	    <LinearLayout android:id="@+id/buttonlayout2"
 	        android:weightSum="4"
 	        android:orientation="horizontal"
+	        android:layout_weight="1"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content" >
 	        
@@ -72,6 +76,7 @@
 	    <LinearLayout android:id="@+id/buttonlayout3"
 	        android:weightSum="4"
 	        android:orientation="horizontal"
+	        android:layout_weight="1"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content" >
 	        

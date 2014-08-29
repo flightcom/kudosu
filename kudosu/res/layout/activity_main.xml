@@ -1,20 +1,35 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="@color/myBlue"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
+	
+	<LinearLayout
+	    android:orientation="horizontal"
+		android:layout_alignParentBottom="true"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content" >
+	    <!-- style="?android:attr/buttonBarStyle"-->
+	    		
+	    <Button
+	        android:id="@+id/buttonPlay"
+	        android:layout_weight="50"
+	        android:layout_margin="10dp"
+	        android:layout_width="match_parent"
+	        android:layout_height="96dp"
+	        android:text="@string/play" />
+	        <!-- style="?android:attr/buttonBarButtonStyle"-->
+	    	
+	    <Button
+	        android:id="@+id/buttonSolve"
+	        android:layout_weight="50"
+	        android:layout_margin="10dp"
+	        android:layout_width="match_parent"
+	        android:layout_height="96dp"
+	        android:text="@string/solve" />
+	        <!-- style="?android:attr/buttonBarButtonStyle"-->
+	    	
+	
+	</LinearLayout>
 
-    <Button
-        android:id="@+id/buttonPlay"
-        android:layout_weight="50"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/play" />
-
-    <Button
-        android:id="@+id/buttonSolve"
-        android:layout_weight="50"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/solve" />
-		
-</LinearLayout>
+</RelativeLayout>

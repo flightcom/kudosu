@@ -9,8 +9,8 @@
         android:targetSdkVersion="20" />
 
     <uses-permission android:name="android.permission.CAMERA" />
-	<uses-permission android:name="android.permission.INTERNET"/>
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -19,14 +19,15 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Holo" >
-        
-        <meta-data android:name="com.google.android.gms.version"
-               android:value="@integer/google_play_services_version"/>
-        
-        <activity android:name="com.google.android.gms.ads.AdActivity"
-             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
-        
+        android:screenOrientation="portrait"
+        android:theme="@style/CustomTheme" >
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -40,8 +41,7 @@
             android:name=".PlayActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_play"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait" >
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
@@ -50,8 +50,7 @@
             android:name=".SolveActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_solve"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait" >
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
@@ -63,8 +62,11 @@
         <activity
             android:name=".SolveManualActivity"
             android:label="@string/title_activity_solve_manual"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait" >
+            android:parentActivityName=".MainActivity" >
+        </activity>
+        <activity
+            android:name=".GameActivity"
+            android:label="@string/title_activity_game" >
         </activity>
     </application>
 
