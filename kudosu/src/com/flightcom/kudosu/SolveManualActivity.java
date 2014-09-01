@@ -4,18 +4,14 @@ import java.util.ArrayList;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 public class SolveManualActivity extends GameActivity {
 	
@@ -57,6 +53,7 @@ public class SolveManualActivity extends GameActivity {
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		
+		setContentView(R.layout.activity_solve_manual);
 		super.onCreate(savedInstanceState);
 		Button btVal = (Button) findViewById(R.id.buttonValider);
 		
@@ -127,53 +124,6 @@ public class SolveManualActivity extends GameActivity {
 		
 		return null;
 		
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-	    super.onConfigurationChanged(newConfig);
-
-		LinearLayout root = (LinearLayout) findViewById(R.id.root);
-	   	int height = root.getHeight();
-	   	int width = root.getWidth();
-
-	   	// Checks the orientation of the screen
-	    if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-	        for ( EditText mCase : this.cases ) {
-				mCase.setWidth((int)height/9);
-				mCase.setHeight((int)height/9);
-	        }
-	        Toast.makeText(getApplicationContext(), "Mode Paysage", Toast.LENGTH_SHORT).show();
-	    } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-	        for ( EditText mCase : this.cases ) {
-				mCase.setWidth((int)width/9);
-				mCase.setHeight((int)width/9);
-	        }
-	        Toast.makeText(getApplicationContext(), "Mode Portrait", Toast.LENGTH_SHORT).show();
-	    }
-	}
-	
-	public void onOrientationChanged(int orientation) {
-		
-		LinearLayout root = (LinearLayout) findViewById(R.id.root);
-	   	int height = root.getHeight();
-	   	int width = root.getWidth();
-
-	   	Log.i(null, Integer.toString(orientation));
-	   	// Checks the orientation of the screen
-	    if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-	        for ( EditText mCase : this.cases ) {
-				mCase.setWidth((int)height/9);
-				mCase.setHeight((int)height/9);
-	        }
-	        Toast.makeText(getApplicationContext(), "Mode Paysage", Toast.LENGTH_SHORT).show();
-	    } else if (orientation == Configuration.ORIENTATION_PORTRAIT){
-	        for ( EditText mCase : this.cases ) {
-				mCase.setWidth((int)width/9);
-				mCase.setHeight((int)width/9);
-	        }
-	        Toast.makeText(getApplicationContext(), "Mode Portrait", Toast.LENGTH_SHORT).show();
-	    }
 	}
 	
 }

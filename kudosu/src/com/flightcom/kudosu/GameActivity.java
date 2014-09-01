@@ -21,6 +21,7 @@ import android.view.View.OnFocusChangeListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
@@ -50,7 +51,6 @@ public class GameActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_solve_manual);
 		
 		final LinearLayout root = (LinearLayout) findViewById(R.id.root);
 
@@ -201,24 +201,47 @@ public class GameActivity extends Activity {
 	public void onConfigurationChanged(Configuration newConfig) {
 	    super.onConfigurationChanged(newConfig);
 
-		LinearLayout root = (LinearLayout) findViewById(R.id.root);
-	   	int height = root.getHeight();
-	   	int width = root.getWidth();
+	    final Configuration newCfg = newConfig;
+		final LinearLayout root = (LinearLayout) findViewById(R.id.root);
+		final LinearLayout gridLayout = (LinearLayout) findViewById(R.id.gridlayout);
+		final LinearLayout btnLayout = (LinearLayout) findViewById(R.id.buttonlayout);
 
-	   	// Checks the orientation of the screen
-	    if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-	        for ( EditText mCase : this.cases ) {
-				mCase.setWidth((int)height/9);
-				mCase.setHeight((int)height/9);
+		ViewTreeObserver observer = root.getViewTreeObserver();
+	    observer.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+	        @Override
+	        public void onGlobalLayout() {
+	           	//remove listener to ensure only one call is made.
+	    	   	root.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+	    	   	int height = root.getHeight();
+	    	   	int width = root.getWidth();
+	    	   	Log.d(null, "Height : " + height + ", width : " + width);
+
+	    	   	// Checks the orientation of the screen
+	    	    if (newCfg.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+	    	        root.setOrientation(LinearLayout.HORIZONTAL);
+	    	        int gridWidth = gridLayout.getWidth();
+		    	   	Log.d(null, "Grid width : " + gridWidth + ", buttons width : " + (width-gridWidth));
+	    	        btnLayout.setLayoutParams(new LinearLayout.LayoutParams(width-height, height));
+					for ( EditText mCase : cases ) {
+						mCase.setWidth(height/9);
+						mCase.setHeight(height/9);
+					}
+	    	    } else if (newCfg.orientation == Configuration.ORIENTATION_PORTRAIT){
+	    	        root.setOrientation(LinearLayout.VERTICAL);
+	    	        int gridHeight = gridLayout.getHeight();
+		    	   	Log.d(null, "Grid height : " + gridHeight);
+	    	        btnLayout.setLayoutParams(new LinearLayout.LayoutParams(width, height-width));
+					for ( EditText mCase : cases ) {
+						mCase.setWidth(width/9);
+						mCase.setHeight(width/9);
+					}
+	    	    }
+
 	        }
-	        Toast.makeText(getApplicationContext(), "Mode Paysage", Toast.LENGTH_SHORT).show();
-	    } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-	        for ( EditText mCase : this.cases ) {
-				mCase.setWidth((int)width/9);
-				mCase.setHeight((int)width/9);
-	        }
-	        Toast.makeText(getApplicationContext(), "Mode Portrait", Toast.LENGTH_SHORT).show();
-	    }
+
+	    });
+	    
 	}
 	
 	//	protected void onResume() {

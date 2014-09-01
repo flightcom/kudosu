@@ -2,20 +2,20 @@
     android:id="@+id/root"
     android:keepScreenOn="true"
     android:orientation="vertical"
-    android:background="#111111"
+    android:background="#1111ff"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="0dip" >
     
     <LinearLayout android:id="@+id/gridlayout"
         android:orientation="vertical"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
         
     </LinearLayout>
     
     <LinearLayout android:id="@+id/buttonlayout"
-        android:background="@android:color/black"
+        android:background="@android:color/white"
         android:orientation="vertical"
         android:layout_gravity="bottom"
         android:paddingTop="0dip"
