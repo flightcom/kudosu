@@ -5,10 +5,7 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="lightgray">#DDDDDD</color>
-    <color name="myBlue">#333333</color>
-    <color name="myBlueLight">#444444</color>
-    <color name="myBlueDark">#222222</color>
-<!--     <color name="myBlue">#222222</color>
-    <color name="myBlueLight">#333333</color>
-    <color name="myBlueDark">#111111</color> -->
+    <color name="myBlue">#00d2fc</color>
+    <color name="myBlueLight">#00c2ec</color>
+    <color name="myBlueDark">#00b2dc</color>
 </resources>
